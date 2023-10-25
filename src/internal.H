@@ -557,6 +557,6 @@ extern void     init_system( void);
 #endif
 #endif
 
-#if HOST_HAVE_STPCPY
+#if HOST_HAVE_STPCPY && !defined(stpcpy)
 extern char *   stpcpy( char * dest, const char * src);
 #endif

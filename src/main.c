@@ -1126,4 +1126,3 @@ static char *   esc_mbchar(
     return  str_end;
 }
 #endif  /* ! MBCHAR_IS_ESCAPE_FREE  */
-

@@ -366,6 +366,7 @@ const char *    set_encoding(
             = "Too long encoding name: %s%.0ld%.0s";    /* _E_  */
     const char *    loc = "";
     int     alias;
+    char   *dot;
     char    norm[ NAMLEN];
             /*
              * Normalized name (removed 'xxxxx.', stripped '_', '-', '.'
@@ -380,10 +381,11 @@ const char *    set_encoding(
             mcpp_fputc( '\n', ERR);
         }
     }
+    if ( dot = strchr( name, '.' ) )
+        /* Remove initial 'xxxxx.' as 'ja_JP.', 'en_US.', 'C.' or any other   */
+        strcpy( norm, dot+1);
+    else
     strcpy( norm, name);
-    if (norm[ 5] == '.')
-        memmove( norm, norm + 5, strlen( norm + 5) + 1);
-        /* Remove initial 'xxxxx.' as 'ja_JP.', 'en_US.' or any other   */
     conv_case( norm, norm + strlen( norm), LOWER);
     strip_bar( norm);
 
