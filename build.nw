@@ -1,0 +1,16 @@
+
+Simply run 'nofake build.nw' for build instructions.  The nofake utility is
+available from coolscripts, at [1].  See [2] for more info.
+
+- [1]: https://github.com/ctarbide/coolscripts
+
+- [2]: https://github.com/ctarbide/coolscripts/blob/master/bin/nofake-README.txt
+
+<<*>>=
+nofake -R'build linux compiler-independent' build.nw
+@
+
+<<build linux compiler-independent>>=
+cat noconfig/linux.mak > src/Makefile
+make -C src
+@
