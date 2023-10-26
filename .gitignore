@@ -1,4 +1,5 @@
 *~
 *.o
+*.stamp
 /src/mcpp
 /src/Makefile

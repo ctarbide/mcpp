@@ -11,6 +11,23 @@ nofake -R'build linux compiler-independent' build.nw
 @
 
 <<build linux compiler-independent>>=
+<<extract sources>>
 cat noconfig/linux.mak > src/Makefile
 make -C src
+@
+
+<<extract sources>>=
+nofake.sh -Rcc1.c -osrc/cc1.c mcpp.nw
+nofake.sh -Rdirective.c -osrc/directive.c mcpp.nw
+nofake.sh -Reval.c -osrc/eval.c mcpp.nw
+nofake.sh -Rexpand.c -osrc/expand.c mcpp.nw
+nofake.sh -Rmain.c -osrc/main.c mcpp.nw
+nofake.sh -Rmain_libmcpp.c -osrc/main_libmcpp.c mcpp.nw
+nofake.sh -Rmbchar.c -osrc/mbchar.c mcpp.nw
+nofake.sh -Rmcpp_lib.h -osrc/mcpp_lib.h mcpp.nw
+nofake.sh -Rmcpp_out.h -osrc/mcpp_out.h mcpp.nw
+nofake.sh -Rpreproc.c -osrc/preproc.c mcpp.nw
+nofake.sh -Rsupport.c -osrc/support.c mcpp.nw
+nofake.sh -Rsystem.c -osrc/system.c mcpp.nw
+nofake.sh -Rtestmain.c -osrc/testmain.c mcpp.nw
 @
