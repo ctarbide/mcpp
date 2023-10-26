@@ -57,12 +57,12 @@ $(NAME).exe : $(OBJS)
 
 !if 	$d( PREPROCESSED)
 # Make a "pre-preprocessed" header file to recompile MCPP with MCPP.
-mcpp.H	: system.H noconfig.H internal.H
-	$(BINDIR)\$(NAME) $(CPPFLAGS) $(MEM_MACRO) preproc.c mcpp.H
-$(OBJS) : mcpp.H
+mcpp.h	: system.h noconfig.h internal.h
+	$(BINDIR)\$(NAME) $(CPPFLAGS) $(MEM_MACRO) preproc.c mcpp.h
+$(OBJS) : mcpp.h
 !else
 main.obj directive.obj eval.obj expand.obj support.obj system.obj mbchar.obj: \
-		system.H internal.H noconfig.H
+		system.h internal.h noconfig.h
 !endif
 
 !if 	$d( PREPROCESSED)
@@ -78,7 +78,7 @@ install :
 	copy /b $(NAME).exe $(BINDIR)\$(NAME).exe
 
 clean	:
-	-del *.obj *.exe *.bak mcpp.H *.i *.tds *.lib *.dll mcpp$(DLL_VER).* *.so
+	-del *.obj *.exe *.bak mcpp.h *.i *.tds *.lib *.dll mcpp$(DLL_VER).* *.so
 
 !if 	$d( MCPP_LIB)
 # subroutine-build

@@ -61,14 +61,14 @@ $(NAME).exe : $(OBJS)
 
 !ifdef PREPROCESSED
 # make a "pre-preprocessed" header file to recompile MCPP with MCPP.
-mcpp.H	: system.H internal.H
-	$(BINDIR)\$(NAME) $(CPPFLAGS) $(LANG) $(MEM_MACRO) preproc.c mcpp.H
-$(OBJS) : mcpp.H
-system.H: noconfig.H
+mcpp.h	: system.h internal.h
+	$(BINDIR)\$(NAME) $(CPPFLAGS) $(LANG) $(MEM_MACRO) preproc.c mcpp.h
+$(OBJS) : mcpp.h
+system.h: noconfig.h
 !else
-$(OBJS) : noconfig.H
+$(OBJS) : noconfig.h
 main.obj directive.obj eval.obj expand.obj support.obj system.obj mbchar.obj: \
-        system.H internal.H
+        system.h internal.h
 !endif
 
 !ifdef PREPROCESSED
@@ -81,7 +81,7 @@ main.obj directive.obj eval.obj expand.obj support.obj system.obj mbchar.obj: \
 !endif
 
 clean	:
-	-del *.obj *.i mcpp.H *.exe *.lib *.dll *.exp *.so
+	-del *.obj *.i mcpp.h *.exe *.lib *.dll *.exp *.so
 
 !ifdef	MCPP_LIB
 #LIBDIR = "$(MSVCDIR)"\lib

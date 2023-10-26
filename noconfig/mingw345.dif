@@ -1,5 +1,5 @@
-*** noconfig.H	Sat Sep 20 12:00:11 2008
---- noconfig.H.mingw345	Sat Sep 20 13:05:05 2008
+*** noconfig.h	Sat Sep 20 12:00:11 2008
+--- noconfig.h.mingw345	Sat Sep 20 13:05:05 2008
 ***************
 *** 15,21 ****
    */

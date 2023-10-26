@@ -152,10 +152,10 @@ int exec_program( int argc, char ** argv) {
  */
 
 #if PREPROCESSED
-#include    "mcpp.H"
+#include    "mcpp.h"
 #else
-#include    "system.H"
-#include    "internal.H"
+#include    "system.h"
+#include    "internal.h"
 #endif
 
 static int      do_if( int hash, const char * directive_name);
@@ -849,7 +849,7 @@ DEFBUF *    do_define(
                     return  defp;
                 dnargs = (defp->nargs == DEF_NOARGS_STANDARD
                             || defp->nargs == DEF_NOARGS_PREDEF
-                            || defp->nargs == DEF_NOARGS_PREDEF_OLD) 
+                            || defp->nargs == DEF_NOARGS_PREDEF_OLD)
                         ? DEF_NOARGS : defp->nargs;
                 if (dnargs <= DEF_NOARGS_DYNAMIC    /* __FILE__ and such    */
                         || dnargs == DEF_PRAGMA /* _Pragma() pseudo-macro   */
@@ -866,9 +866,9 @@ DEFBUF *    do_define(
             } else {                        /* It's known:          */
                 if (ignore_redef)
                     return  defp;
-                dnargs = (defp->nargs == DEF_NOARGS_STANDARD 
+                dnargs = (defp->nargs == DEF_NOARGS_STANDARD
                             || defp->nargs == DEF_NOARGS_PREDEF
-                            || defp->nargs == DEF_NOARGS_PREDEF_OLD) 
+                            || defp->nargs == DEF_NOARGS_PREDEF_OLD)
                         ? DEF_NOARGS : defp->nargs;
                 redefined = TRUE;
             }
@@ -914,7 +914,7 @@ DEFBUF *    do_define(
     defp = install_macro( macroname, nargs, work_buf, repl_list, prevp, cmp
             , predefine);
     if ((mcpp_debug & MACRO_CALL) && src_line) {
-                                    /* Get location on source file  */        
+                                    /* Get location on source file  */
         LINE_COL    s_line_col, e_line_col;
         s_line_col.line = src_line;
         s_line_col.col = def_start;
@@ -1062,7 +1062,7 @@ ret:
     return  TRUE;
 }
 
-static int  get_repl( 
+static int  get_repl(
     const char * macroname
 )
 /*
@@ -1598,7 +1598,7 @@ int undefine(
     return  TRUE;
 }
 
-static void dump_repl( 
+static void dump_repl(
     const DEFBUF *  dp,
     FILE *  fp,
     int     gcc2_va
@@ -1854,10 +1854,10 @@ void    clear_symtable( void)
  */
 
 #if PREPROCESSED
-#include    "mcpp.H"
+#include    "mcpp.h"
 #else
-#include    "system.H"
-#include    "internal.H"
+#include    "system.h"
+#include    "internal.h"
 #endif
 
 typedef struct optab {
@@ -2303,7 +2303,7 @@ expr_t  eval_if( void)
 
 static int  eval_lex( void)
 /*
- * Return next operator or constant to evaluate.  Called from eval_if().  It 
+ * Return next operator or constant to evaluate.  Called from eval_if().  It
  * calls a special-purpose routines for character constants and numeric values:
  *      eval_char()     called to evaluate 'x'
  *      eval_num()      called to evaluate numbers
@@ -3219,7 +3219,7 @@ static expr_t   eval_signed(
         if (chk
 #if HAVE_LONG_LONG
                 || (! stdc3 && v1 && (long) v1 == (long) -v1)
-#endif 
+#endif
             )
             overflow( op_name, valpp, chk);
         v1 = -v1;
@@ -3529,10 +3529,10 @@ static void dump_stack(
  */
 
 #if PREPROCESSED
-#include    "mcpp.H"
+#include    "mcpp.h"
 #else
-#include    "system.H"
-#include    "internal.H"
+#include    "system.h"
+#include    "internal.h"
 #endif
 
 #define ARG_ERROR   (-255)
@@ -3911,7 +3911,7 @@ static int  print_macro_inf(
     }
     switch (c) {
     case MAC_CALL_START :           /* Start of a macro expansion   */
-        *opp += sprintf( *opp, "/*<%s", m_inf->defp->name); /* Macro name   */ 
+        *opp += sprintf( *opp, "/*<%s", m_inf->defp->name); /* Macro name   */
         if (m_inf->locs.start_line) {
             /* Location of the macro call in source file        */
             *opp += sprintf( *opp, " %ld:%d-%ld:%d"
@@ -3949,13 +3949,13 @@ static int  print_macro_inf(
     return  **cpp & UCHARMAX;
 }
 
-static char *   print_macro_arg( 
+static char *   print_macro_arg(
     char *  out,                                /* Output buffer    */
     MACRO_INF *     m_inf,                      /* &mac_inf[ m_num] */
     int     argn,                               /* Argument number  */
     int     real_arg,       /* Real argument or expanded argument ? */
     int     start           /* Start of an argument or end ?        */
-) 
+)
 /*
  * Embed an argument information into a comment.
  * This routine is only called from above print_macro_inf().
@@ -4046,7 +4046,7 @@ static char *   chk_magic_balance(
                         /* Sequence from get_an_arg() is always     */
                         /* surrounded by starting of an arg magic   */
                         /* and its corresponding closing magic.     */
-                        while (buf_p + (ARG_E_LEN_V - 2) <= cur_edge 
+                        while (buf_p + (ARG_E_LEN_V - 2) <= cur_edge
                                 && memcmp( cur_edge, arg_end_magic, 2) != 0)
                             cur_edge--;
                         if (buf_p + (ARG_E_LEN_V - 2) <= cur_edge
@@ -4217,9 +4217,9 @@ static char *   replace(
         defp = def_special( defp);      /* These are redefined dynamically  */
         if (mcpp_mode == STD) {
         /* Wrap repl-text with token separators to prevent token merging    */
-            *cur_out++ = TOK_SEP;     
+            *cur_out++ = TOK_SEP;
             cur_out = stpcpy( cur_out, defp->repl);
-            *cur_out++ = TOK_SEP;     
+            *cur_out++ = TOK_SEP;
             *cur_out = EOS;
         } else {
             cur_out = stpcpy( cur_out, defp->repl);
@@ -4441,7 +4441,7 @@ static DEFBUF * def_special(
                 prevp = look_prev( defp->name, &cmp);
                 defp = install_macro( "__FILE__", DEF_NOARGS_DYNAMIC - 2, ""
                         , work_buf, prevp, cmp, 0); /* Re-define    */
-                break;     
+                break;
             }
         }
         break;
@@ -4616,7 +4616,7 @@ static char *   catenate(
                     prev_token = prev_prev_token;       /* Skip separator   */
                 }
             }
-            if (*prev_token == DEF_MAGIC 
+            if (*prev_token == DEF_MAGIC
                     || (mcpp_mode == STD && *prev_token == IN_SRC)) {
                 size_t  len = 1;
                 if (trace_macro && *prev_token == IN_SRC)
@@ -5268,7 +5268,7 @@ static char *   substitute(
             if (c == gvar_arg && *arg == RT_END && ! ansi) {
                 /*
                  * GCC variadic macro and its variable argument is absent.
-                 * Note that in its "strict-ansi" mode GCC does not remove 
+                 * Note that in its "strict-ansi" mode GCC does not remove
                  * ',', nevertheless it ignores '##' (inconsistent
                  * behavior).  Though GCC2 changes behavior depending the
                  * ',' is preceded by space or not, we only count on the
@@ -5413,11 +5413,11 @@ static char *   rescan(
                             /* 'defined' token in directive line    */
                 continue;
             }
-        } 
+        }
 #endif
         if (mcpp_mode == STD && c == IN_SRC)
             len = trace_macro ? IN_SRC_LEN : 1;
-        if (token_type == NAM && c != DEF_MAGIC 
+        if (token_type == NAM && c != DEF_MAGIC
                 && (inner = look_id( tp + len)) != NULL) {  /* A macro name */
             int     is_able;        /* Macro is not "blue-painted"  */
             char *  endf = NULL;    /* Output stream at end of infile       */
@@ -5430,7 +5430,7 @@ static char *   rescan(
                     && ((mcpp_mode == POST_STD && is_able_repl( inner))
                         || (mcpp_mode == STD
                             && (((is_able = is_able_repl( inner)) == YES)
-                                || (is_able == READ_OVER 
+                                || (is_able == READ_OVER
                                     && (c == IN_SRC || compat_mode)))))) {
                                             /* Really a macro call  */
                 LINE_COL    in_src_line_col = { 0L, 0};
@@ -6073,7 +6073,7 @@ arg_ret:
     /* defp->nargs, or return defp->nargs for object-like macro.        */
     return  defp->nargs <= DEF_NOARGS ? defp->nargs : nargs;
 }
- 
+
 static int  get_an_arg(
     int     c,
     char ** argpp,      /* Address of pointer into argument list    */
@@ -6319,7 +6319,7 @@ static int  squeeze_ws(
     FILE *  fp = infile->fp;
     int     end_of_file = (out && endf) ? FALSE : TRUE;
 
-    while (((char_type[ c = get_ch()] & SPA) && (! standard 
+    while (((char_type[ c = get_ch()] & SPA) && (! standard
                 || (mcpp_mode == POST_STD && file == infile)
                 || (mcpp_mode == STD
                     && ((macro_line != 0 && macro_line != MACRO_ERROR)
@@ -6430,10 +6430,10 @@ static void skip_macro( void)
 }
 
 static void diag_macro(
-    int     severity,                       /* Error or warning     */ 
+    int     severity,                       /* Error or warning     */
     const char *    format,
     const char *    arg1,
-    long            arg2, 
+    long            arg2,
     const char *    arg3,
     const DEFBUF *  defp1,          /* Macro causing the problem 1  */
     const DEFBUF *  defp2                                   /*   2  */
@@ -6513,10 +6513,10 @@ static void dump_args(
  */
 
 #if PREPROCESSED                /* Use "pre-preprocessed" header    */
-#include    "mcpp.H"
+#include    "mcpp.h"
 #else
-#include    "system.H"
-#include    "internal.H"
+#include    "system.h"
+#include    "internal.h"
 #endif
 
     /* Function pointer to expand_macro() functions.    */
@@ -6720,7 +6720,7 @@ static void dump_args(
  *      2. processing directive line (directive.c, eval.c, get_unexpandable(),
  *         do_pragma() and its subroutines).
  *      3. processing _Pragma() operator (do_pragma_op()).
- *      4. miscellaneous (init_gcc_macro(), curfile()). 
+ *      4. miscellaneous (init_gcc_macro(), curfile()).
  */
     char        work_buf[ NWORK + IDMAX];       /* Work buffer      */
     char *      workp;              /* Pointer into work_buf[]      */
@@ -7455,7 +7455,7 @@ static void put_a_line(
  *      1. Convert digraphs to usual tokens.
  *      2. Double '\\' of the second byte of multi-byte characters.
  *    These conversions are done selectively according to the macros defined
- *  in system.H.
+ *  in system.h.
  *      1. Digraphs are converted if ! HAVE_DIGRAPHS and digraph recoginition
  *  is enabled by DIGRAPHS_INIT and/or -2 option on execution.
  *      2. '\\' of the second byte of SJIS (BIGFIVE or ISO2022_JP) is doubled
@@ -7656,10 +7656,10 @@ main (int argc, char *argv[])
  */
 
 #if PREPROCESSED
-#include    "mcpp.H"
+#include    "mcpp.h"
 #else
-#include    "system.H"
-#include    "internal.H"
+#include    "system.h"
+#include    "internal.h"
 #endif
 
 /*
@@ -8496,8 +8496,8 @@ int  last_is_mbchar(
 
 #pragma MCPP preprocess
 
-#include    "system.H"
-#include    "internal.H"
+#include    "system.h"
+#include    "internal.h"
 
 #pragma MCPP put_defines
 
@@ -8577,10 +8577,10 @@ int  last_is_mbchar(
  */
 
 #if PREPROCESSED
-#include    "mcpp.H"
+#include    "mcpp.h"
 #else
-#include    "system.H"
-#include    "internal.H"
+#include    "system.h"
+#include    "internal.h"
 #endif
 
 static void     scan_id( int c);
@@ -9142,7 +9142,7 @@ static void scan_id(
         if (mcpp_mode == STD && c == '\\' && stdc2) {
             int     cnt;
             char *  tp = bp;
-            
+
             if ((c = get_ch()) == 'u') {
                 cnt = 4;
             } else if (c == 'U') {
@@ -9890,7 +9890,7 @@ static char *   scan_op(
             } else {                                    /* .        */
                 openum = OP_1;
             }
-        } else {    
+        } else {
             openum = OP_1;
         }
         break;
@@ -10329,7 +10329,7 @@ static char *   read_a_comment(
     if (keep_spaces) {
         saved_sp = sp - 2;          /* '-2' for beginning / and *   */
         *sizp = 0;
-    }        
+    }
     if (keep_comments)                      /* If writing comments  */
         mcpp_fputs( "/*", OUT);             /* Write the initializer*/
     c = *sp++;
@@ -10419,7 +10419,7 @@ static char *   get_line(
 /*
  * ANSI (ISO) C: translation phase 1, 2.
  * Get the next logical line from source file.
- * Convert [CR+LF] to [LF]. 
+ * Convert [CR+LF] to [LF].
  */
 {
 #if COMPILER == INDEPENDENT
@@ -11353,14 +11353,14 @@ static void dump_token(
  *
  * Routines dependent on O.S., compiler or compiler-driver.
  * To port MCPP for the systems not yet ported, you must
- *      1. specify the constants in "configed.H" or "noconfig.H",
+ *      1. specify the constants in "configed.h" or "noconfig.h",
  *      2. append the system-dependent routines in this file.
  */
 #if PREPROCESSED
-#include    "mcpp.H"
+#include    "mcpp.h"
 #else
-#include    "system.H"
-#include    "internal.H"
+#include    "system.h"
+#include    "internal.h"
 #endif
 
 #if     HOST_SYS_FAMILY == SYS_UNIX
@@ -11623,7 +11623,7 @@ static char *   mkdep_mt;               /* Argument of -MT option   */
 /* sharp_filename is filename for #line line, used only in cur_file()   */
 static char *   sharp_filename = NULL;
 static char *   argv0;      /* argv[ 0] for usage() and version()   */
-static int      ansi;           /* __STRICT_ANSI__ flag for GNUC    */ 
+static int      ansi;           /* __STRICT_ANSI__ flag for GNUC    */
 static int      compat_mode;
                 /* "Compatible" mode of recursive macro expansion   */
 #define MAX_ARCH_LEN    16
@@ -11850,7 +11850,7 @@ plus:
                 compat_mode = TRUE;     /* 'compatible' mode        */
                 mcpp_mode = STD;
             }
-            else 
+            else
                 usage( opt);
             standard = (mcpp_mode == STD || mcpp_mode == POST_STD);
             if (old_mode != STD && old_mode != mcpp_mode)
@@ -12157,7 +12157,7 @@ plus:
             /* Fall through */
         case 'k':
             option_flags.k = TRUE;
-            /* Keep white spaces of input lines as they are */ 
+            /* Keep white spaces of input lines as they are */
             break;
 
 #if COMPILER == GNUC
@@ -13059,7 +13059,7 @@ static void def_a_macro(
     skip_nl();                      /* Clear the appended <newline> */
 }
 
-static void     chk_opts( 
+static void     chk_opts(
     int     sflag,      /* Flag of Standard or post-Standard mode   */
     int     trad                    /* -traditional (GCC only)      */
 )
@@ -13559,7 +13559,7 @@ static void set_sys_dirs(
     set_a_dir( "/usr/local/include");
 #endif
 
-#ifdef  C_INCLUDE_DIR1 
+#ifdef  C_INCLUDE_DIR1
     set_a_dir( C_INCLUDE_DIR1);
 #endif
 #ifdef  C_INCLUDE_DIR2
@@ -13621,7 +13621,7 @@ static void set_a_dir(
 #if SYSTEM == SYS_MAC
         to_search_framework = &incdir[ framework_pos];
 #endif
-        max_inc *= 2;                   
+        max_inc *= 2;
     }
 
     if (dirname == NULL)
@@ -13712,7 +13712,7 @@ static char *   norm_dir(
         if (! norm_name && option_flags.v)
             mcpp_fprintf( ERR, "Invalid header map file \"%s\" is ignored\n"
                     , dirname);
-    } else 
+    } else
 #endif
     {
         norm_name = norm_path( dirname, NULL, FALSE, FALSE);
@@ -13962,7 +13962,7 @@ static char *   norm_path(
             } else {                                /* Impossible   */
                 break;
             }
-        } else {                                    /* Impossible   */ 
+        } else {                                    /* Impossible   */
             break;
         }
     }
@@ -14089,7 +14089,7 @@ static void init_gcc_macro( void)
                 && scan_token( skip_ws(), (tp = work_buf, &tp), work_end)
                         == NAM
                     && str_eq( work_buf, "define")) {
-                defp = do_define( TRUE, nargs);     /* Ignore re-definition */ 
+                defp = do_define( TRUE, nargs);     /* Ignore re-definition */
             }
             skip_nl();
         }
@@ -14301,7 +14301,7 @@ void    put_depend(
 }
 
 static char *   md_init(
-    const char *    filename,   /* The source file name             */ 
+    const char *    filename,   /* The source file name             */
     char *  output              /* Output to dependency file        */
 )
 /*
@@ -14608,7 +14608,7 @@ static int  has_directory(
 )
 /*
  * If a directory is found in the 'source' filename string (i.e. "includer"),
- * the directory part of the string is copied to 'directory' and 
+ * the directory part of the string is copied to 'directory' and
  * has_directory() returns TRUE.
  * Else, nothing is copied and it returns FALSE.
  */
@@ -14752,7 +14752,7 @@ search:
         return  FALSE;
     if (standard && included( fullname))        /* Once included    */
         goto  true;
-        
+
     if ((max_open != 0 && max_open <= include_nest)
                             /* Exceed the known limit of open files */
             || ((fp = fopen( fullname, "r")) == NULL && errno == EMFILE)) {
@@ -14782,7 +14782,7 @@ search:
         }
         if (max_open == 0)      /* Remember the limit of the system */
             max_open = include_nest;
-    } else if (fp == NULL)                  /* No read permission   */ 
+    } else if (fp == NULL)                  /* No read permission   */
         goto  false;
     /* Truncate buffer of the includer to save memory   */
     len = (int) (file->bptr - file->buffer);
@@ -15082,7 +15082,7 @@ static int      search_framework(
             return  TRUE;
     }
 
-    *cp2 = PATH_DELIM;      /* Restore original include file format */ 
+    *cp2 = PATH_DELIM;      /* Restore original include file format */
 
     return  FALSE;
 }
@@ -16277,7 +16277,7 @@ int main(int argc, char *argv[])
 
     /* this works only if called function does not manipulate pointer array! */
     /*
-     * Note that mcpp no longer uses freopen() since 2008/04/20, so you can 
+     * Note that mcpp no longer uses freopen() since 2008/04/20, so you can
      * output multiple input to different files, though this sample output
      * to stdout, which may be redirected.
      */
@@ -16317,4 +16317,1964 @@ int main(int argc, char *argv[])
 
     return(0);
 }
+@
+
+<<configed.h>>=
+/*
+ * configed.h
+ * Configurations for MCPP using config.h genarated by configure script.
+ *
+ * WARNING: These settings assume HOST == TARGET.  In case of HOST
+ *      differs from TARGET, you must edit this file here and there.
+ */
+
+#define     TRUE            1
+#define     FALSE           0
+#define     DATE            "2008/11"               /* Date of mcpp     */
+
+/*
+ *  'Target' means the O.S. and the compiler to which cpp is implemented.
+ *  'Host' means the O.S. and the compiler with which cpp is compiled.
+ */
+
+#include    "config.h"
+
+#ifndef COMPILER            /* No target compiler specified */
+#define COMPILER            COMPILER_UNKNOWN
+#endif
+#ifndef HOST_COMPILER       /* No host compiler specified   */
+#define HOST_COMPILER       COMPILER
+#endif
+
+/*
+ *      P A R T   1     Configurations for target-operating-system
+ *                      and target-compiler.
+ */
+
+/*
+ * Names of the SYSTEM (i.e. target operating system).  This is needed so that
+ * cpp can use appropriate filename conventions.
+ */
+#define SYS_UNKNOWN         0
+#define SYS_UNIX            0x1000
+#define SYS_LINUX           0x1800  /* (SYS_LINUX & 0xF000) == SYS_UNIX     */
+#define SYS_FREEBSD         0x1A00  /* (SYS_FREEBSD & 0xF000) == SYS_UNIX   */
+#define SYS_CYGWIN          0x1C00  /* (SYS_CYGWIN & 0xF000) == SYS_UNIX    */
+#define SYS_MAC             0x1E00  /* (SYS_MAC & 0xF000) == SYS_UNIX       */
+#define SYS_WIN             0x7000
+#define SYS_WIN32           0x7400  /* (SYS_WIN32 & 0xF000) == SYS_WIN      */
+#define SYS_MINGW           0x7C00  /* (SYS_MINGW & 0xF000) == SYS_WIN      */
+
+/* COMPILER */
+#define COMPILER_UNKNOWN    0
+#define MSC                 0x7400  /* Microsoft C, Visual C++      */
+#define BORLANDC            0x7440  /* Borland C    */
+#define WIN_SYMANTECC       0x7470  /* Symantec for Windows         */
+#define LCC                 0x74C0  /* LCC-Win32    */
+#define GNUC                0x00E0  /* GNU C (GCC)  */
+#define INDEPENDENT         0xFFFF  /* No target, compiler-independent-build*/
+
+#define SYS_FAMILY          (SYSTEM & 0xF000)
+#define COMPILER_FAMILY     (COMPILER & 0xF0)
+#define HOST_SYS_FAMILY     (HOST_SYSTEM & 0xF000)
+
+/* Default MBCHAR (multi-byte character) encoding.  */
+#define EUC_JP          0x10    /* Extended UNIX code of JIS X 0208 */
+#define GB2312          0x20    /* EUC-like encoding of Chinese GB 2312-80  */
+#define KSC5601         0x30    /* EUC-like encoding of Korean KS C 5601    */
+#define SJIS            0x80    /* Shift-JIS encoding of JIS X 0208 */
+#define BIGFIVE         0x90    /* Encoding of Taiwanese Big Five   */
+#define ISO2022_JP      0x100   /* ISO-2022-JP (ISO-2022-JP1) encoding      */
+#define UTF8            0x1000  /* UTF-8 encoding           */
+
+/*
+ * MBCHAR means multi-byte character encoding.
+ * MBCHAR means the default encoding, and you can change the encoding by
+ *      #pragma MCPP setlocale, -e <encoding> option or environment variable
+ *      LC_ALL, LC_CTYPE, LANG.
+ * MBCHAR == 0 means not to recognize any multi-byte character encoding.
+ */
+
+/*
+ * In order to predefine target-dependent macros,
+ * several macros are defined here:
+ * *_OLD define the macro beginning with an alphabetic letter,
+ * *_STD, *_STD?, *_EXT, *_EXT2 define the macro beginning with an '_'.
+ * *_STD1 define the macro beginning with '__' and ending with an alpha-
+ *          numeric letter.
+ * *_STD2 define the macro beginning with '__' and ending with '__'.
+ * These may not be defined, if they are not needed.
+ * They should not be #defined to no token or to "".
+ *
+ * SYSTEM_OLD, SYSTEM_STD1, SYSTEM_STD2, SYSTEM_EXT, SYSTEM_EXT2
+ *      define the target operating system (by name).
+ * SYSTEM_SP_OLD, SYSTEM_SP_STD     define the target-OS specific macro name
+ * COMPILER_OLD, COMPILER_STD1, COMPILER_STD2, COMPILER_EXT, COMPILER_EXT2
+ *          , COMPILER_SP_OLD, COMPILER_SP_STD
+ *      define the target compiler (by name).
+ * COMPILER_CPLUS        defines the target C++ compiler.
+ * COMPILER_SP1, COMPILER_SP2, COMPILER_SP3
+ *      define the compiler-specific macros.
+ *
+ * <macro>_VAL      specify the value of the <macro>.
+ *      If not specified, these values default to "1".
+ *      To define the value of no-token, specify as "" rather than no-token.
+ * SYSTEM_OLD, SYSTEM_STD?, COMPILER_OLD have the value of "1".
+ */
+
+/*
+ * target-compiler-dependent definitions:
+ *
+ * LINE_PREFIX  defines the output line prefix, if not "#line 123".
+ *              This should be defined as "# " to represent "# 123" format
+ *              ("#line " represents "#line 123" format).
+ *
+ * ENV_C_INCLUDE_DIR    may be defined to the name of environment-variable for
+ *              C include directory.
+ * ENV_CPLUS_INCLUDE_DIR    is name of environment-variable for C++ include
+ *              directory which exists other than ENV_C_INCLUDE_DIR.
+ * ENV_SEP      is the separator (other than space) of include-paths in an
+ *              environment-variable.  e.g. the ':' in
+ *              "/usr/abc/include:/usr/xyz/include"
+ *
+ * EMFILE       should be defined to the macro to represent errno of 'too many
+ *              open files' if the macro is different from EMFILE.
+ *
+ * ONE_PASS     should be set TRUE, if COMPILER is "one pass compiler".
+ *
+ * FNAME_FOLD   means that target-system folds upper and lower cases of
+ *              directory and file-name.
+ *
+ * SEARCH_INIT  specifies the default value of 'search_rule' (in system.c).
+ *              'search_rule' holds searching rule of #include "header.h" to
+ *              search first before searching user specified or system-
+ *              specific include directories.
+ *              CURRENT means to search the directory relative to "current
+ *              directory" which is current at cpp invocation.
+ *              SOURCE means to search the directory relative to that of the
+ *              source file (i.e. "includer").
+ *              (CURRENT & SOURCE) means to search current directory first
+ *              source directory next.
+ *              'search_rule' is initialized to SEARCH_INIT.
+ */
+#define CURRENT             1
+#define SOURCE              2
+
+#if     SYS_FAMILY == SYS_UNIX
+#define SYSTEM_OLD          "unix"
+#define SYSTEM_STD1         "__unix"
+#define SYSTEM_STD2         "__unix__"
+#endif
+
+#if     SYSTEM == SYS_FREEBSD
+#define SYSTEM_EXT          "__FreeBSD__"
+#endif
+
+#if     SYSTEM == SYS_LINUX
+#define SYSTEM_EXT          "__linux__"
+#endif
+
+#if     SYSTEM == SYS_MAC
+#define SYSTEM_EXT          "__APPLE__"
+#endif
+
+#if     SYSTEM == SYS_CYGWIN
+#define SYSTEM_EXT          "__CYGWIN__"
+#if     defined (__CYGWIN64__)
+#define SYSTEM_EXT2         "__CYGWIN64__"
+#else
+#define SYSTEM_EXT2         "__CYGWIN32__"
+#endif
+#ifndef MBCHAR
+#define MBCHAR              SJIS
+#endif
+#endif
+
+#if     SYSTEM == SYS_MINGW
+#define SYSTEM_EXT          "__MINGW__"
+#if     defined (__MINGW64__)
+#define SYSTEM_EXT2         "__MINGW64__"
+#else
+#define SYSTEM_EXT2         "__MINGW32__"
+#endif
+#ifndef MBCHAR
+#define MBCHAR              SJIS
+#endif
+#endif
+
+#if     SYS_FAMILY == SYS_UNIX
+#ifndef MBCHAR
+#define MBCHAR              EUC_JP      /* UTF8 if you like */
+#endif
+#endif
+
+#if     COMPILER == GNUC
+#define COMPILER_EXT        "__GNUC__"
+#define COMPILER_EXT_VAL    GCC_MAJOR_VERSION
+#define COMPILER_EXT2       "__GNUC_MINOR__"
+#define COMPILER_EXT2_VAL   GCC_MINOR_VERSION
+#define COMPILER_CPLUS      "__GNUG__"
+#define COMPILER_CPLUS_VAL  GCC_MAJOR_VERSION
+#ifndef ENV_C_INCLUDE_DIR
+#define ENV_C_INCLUDE_DIR   "C_INCLUDE_PATH"
+#define ENV_CPLUS_INCLUDE_DIR   "CPLUS_INCLUDE_PATH"
+#endif
+/*
+ * __SIZE_TYPE__, __PTRDIFF_TYPE__ and __WCHAR_TYPE__ are the predefines of
+ * GCC and undocumented in GCC 2.
+ * On GCC V.3.*, V.4.*, these macros are known by mcpp_g*_predef_*.h files.
+ */
+#if     __GNUC__ == 2
+#define COMPILER_SP1        "__SIZE_TYPE__"
+#define COMPILER_SP2        "__PTRDIFF_TYPE__"
+#define COMPILER_SP3        "__WCHAR_TYPE__"
+#endif
+
+#define CMP_NAME            "GCC"
+#endif  /* COMPILER == GNUC */
+
+#if     COMPILER == INDEPENDENT
+/* specifications of compiler-independent-build */
+#define LINE_PREFIX         "#line "
+#define STD_LINE_PREFIX     TRUE    /* Output #line by C source format      */
+#define HAVE_DIGRAPHS       TRUE    /* Output digraphs as it is     */
+#define SEARCH_INIT         SOURCE  /* Include directory relative to source */
+#define SJIS_IS_ESCAPE_FREE         TRUE    /* Do not treat SJIS specially  */
+#define BIGFIVE_IS_ESCAPE_FREE      TRUE    /* Do not treat specially       */
+#define ISO2022_JP_IS_ESCAPE_FREE   TRUE    /* Do not treat specially       */
+#define TARGET_HAVE_LONG_LONG       TRUE    /* dummy    */
+#define STDC_VERSION        199409L /* Initial value of __STDC_VERSION__    */
+#endif
+
+/*
+ * defaults
+ */
+
+#ifdef  SYSTEM_EXT
+#ifndef SYSTEM_EXT_VAL
+#define SYSTEM_EXT_VAL      "1"
+#endif
+#endif
+#ifdef  SYSTEM_EXT2
+#ifndef SYSTEM_EXT2_VAL
+#define SYSTEM_EXT2_VAL     "1"
+#endif
+#endif
+#ifdef  COMPILER_STD1
+#ifndef COMPILER_STD1_VAL
+#define COMPILER_STD1_VAL   "1"
+#endif
+#endif
+#ifdef  COMPILER_STD2
+#ifndef COMPILER_STD2_VAL
+#define COMPILER_STD2_VAL   "1"
+#endif
+#endif
+#ifdef  COMPILER_EXT
+#ifndef COMPILER_EXT_VAL
+#define COMPILER_EXT_VAL    "1"
+#endif
+#endif
+#ifdef  COMPILER_EXT2
+#ifndef COMPILER_EXT2_VAL
+#define COMPILER_EXT2_VAL   "1"
+#endif
+#endif
+#ifdef  COMPILER_CPLUS
+#ifndef COMPILER_CPLUS_VAL
+#define COMPILER_CPLUS_VAL  "1"
+#endif
+#endif
+
+#ifndef ENV_C_INCLUDE_DIR
+#define ENV_C_INCLUDE_DIR   "INCLUDE"
+#endif
+#ifndef ENV_CPLUS_INCLUDE_DIR
+#define ENV_CPLUS_INCLUDE_DIR   "CPLUS_INCLUDE"
+#endif
+
+#ifndef ENV_SEP
+#if     SYS_FAMILY == SYS_WIN
+#define ENV_SEP             ';'
+#else
+#define ENV_SEP             ':'
+#endif
+#endif
+
+#ifndef ONE_PASS
+#define ONE_PASS            FALSE
+#endif
+
+/*
+ * CHARBIT, UCHARMAX are respectively CHAR_BIT, UCHAR_MAX of target compiler.
+ * CHARBIT should be defined to the number of bits per character.
+ * It is needed only for processing of multi-byte character constants.
+ * UCHARMAX should be defined to the maximum value of type unsigned char
+ * or maximum value of unsigned int which is converted from type (signed)
+ * char.
+ *
+ * LONGMAX      should be defined to the LONG_MAX in <limits.h>.
+ * ULONGMAX     should be defined to the ULONG_MAX in <limits.h>.
+ */
+
+/* _POSIX_* only to get PATH_MAX    */
+#define _POSIX_             1
+#define _POSIX_SOURCE       1
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE     1
+#define _POSIX_C_SOURCE_defined     1
+#endif
+#include    "limits.h"
+#undef  _POSIX_
+#undef  _POSIX_SOURCE
+#ifdef  _POSIX_C_SOURCE_defined
+#undef  _POSIX_C_SOURCE
+#undef  _POSIX_C_SOURCE_defined
+#endif
+#define CHARBIT             CHAR_BIT
+#define UCHARMAX            UCHAR_MAX
+#define USHRTMAX            USHRT_MAX
+#define LONGMAX             LONG_MAX
+#define ULONGMAX            ULONG_MAX
+
+/*
+ * Define MBCHAR (multi-byte character encoding) to SJIS, EUC_JP or other.
+ */
+#ifndef MBCHAR
+#define MBCHAR              0
+#endif
+
+/*
+ * SJIS_IS_ESCAPE_FREE means the compiler does not escape '0x5c' ('\\') in
+ * shift-JIS encoded multi-byte character.  SJIS_IS_ESCAPE_FREE == FALSE
+ * enables cpp to insert * '\\' before '\\' of the 2nd byte of SJIS code in
+ * literal.  This insertion is for the compiler-proper which can't recognize
+ * SJIS literal.
+ * BIGFIVE_IS_ESCAPE_FREE means similar case on BIGFIVE encoding.
+ * ISO2022_JP_IS_ESCAPE_FREE means similar case on ISO2022_JP encoding.
+ */
+#ifndef SJIS_IS_ESCAPE_FREE
+#define SJIS_IS_ESCAPE_FREE     FALSE   /* or TRUE following your compiler  */
+#endif
+#ifndef BIGFIVE_IS_ESCAPE_FREE
+#define BIGFIVE_IS_ESCAPE_FREE  FALSE   /* or TRUE following your compiler  */
+#endif
+#ifndef ISO2022_JP_IS_ESCAPE_FREE
+#define ISO2022_JP_IS_ESCAPE_FREE   FALSE   /* or TRUE following compiler   */
+#endif
+
+/*
+ *      P A R T   2     Configurations for host-compiler.
+ *
+ *      WARNING: In case of HOST_COMPILER differs from COMPILER, you must
+ *          edit here and there of this part.
+ */
+
+#define HOST_HAVE_STPCPY        HAVE_STPCPY
+
+/*
+ * Declaration of standard library functions and macros.
+ */
+
+/* stdin, stdout, stderr, FILE, NULL, fgets(), fputs() and other functions. */
+#include    "stdio.h"
+
+/* PATHMAX is the maximum length of path-list on the host system.   */
+#ifdef  PATH_MAX
+#define PATHMAX     PATH_MAX        /* Posix macro  */
+#else
+#define PATHMAX     FILENAME_MAX
+#endif
+
+/* islower(), isupper(), toupper(), isdigit(), isxdigit(), iscntrl()        */
+#include    "ctype.h"
+
+/* errno    */
+#include    "errno.h"
+
+#include    "string.h"
+#include    "stdlib.h"
+#include    "time.h"
+#include    "setjmp.h"
+
+/* For debugging malloc systems by kmatsui  */
+#if     KMMALLOC && _MEM_DEBUG
+#include        "xalloc.h"
+#endif
+
+@
+
+<<internal.h>>=
+/*-
+ * Copyright (c) 1998, 2002-2008 Kiyoshi Matsui <kmatsui@t3.rim.or.jp>
+ * All rights reserved.
+ *
+ * Some parts of this code are derived from the public domain software
+ * DECUS cpp (1984,1985) written by Martin Minow.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+/*
+ *                          I N T E R N A L . H
+ *      I n t e r n a l   D e f i n i t i o n s   f o r   M C P P
+ *
+ * In general, definitions in this file should not be changed by implementor.
+ */
+
+#ifndef SYSTEM_H
+    #error "system.h" must be included prior to "internal.h"
+#endif
+
+#include "mcpp_out.h"
+
+#if MCPP_LIB
+#include "mcpp_lib.h"   /* External interface when used as library  */
+#endif
+
+#define EOS             '\0'        /* End of string                */
+#define CHAR_EOF        0           /* Returned by get_ch() on eof  */
+
+#define VA_ARGS         (UCHARMAX + 1)      /* Signal of variable arguments */
+#define GVA_ARGS        (VA_ARGS * 2)       /* GCC-specific variable args   */
+#define AVA_ARGS        (VA_ARGS | GVA_ARGS)/* Any variable arguments       */
+#define DEF_PRAGMA      (-1 - AVA_ARGS)     /* _Pragma() pseudo-macro       */
+#define DEF_NOARGS      (-2 - AVA_ARGS)     /* #define foo vs #define foo() */
+#define DEF_NOARGS_PREDEF_OLD   (DEF_NOARGS - 1)
+                        /* Compiler-predefined macro without leading '_'    */
+#define DEF_NOARGS_PREDEF   (DEF_NOARGS - 2)/* Compiler-predefined macro    */
+#define DEF_NOARGS_STANDARD (DEF_NOARGS - 3)/* Standard predefined macro    */
+#define DEF_NOARGS_DYNAMIC  (DEF_NOARGS - 4)/* Standard dynamically defined */
+
+/*
+ * These magic characters must be control characters which can't be used
+ * in source file.
+ */
+/* for '#pragma MCPP debug macro_call' and -K option in STD mode.   */
+#define MAC_INF         0x18        /* Magic for macro informations */
+/* In STD and POST_STD modes (IN_SRC and TOK_SEP are for STD mode only).    */
+#define DEF_MAGIC       0x19        /* Magic to prevent recursive expansion */
+#define IN_SRC          0x1A        /* Magic of name from source    */
+#define RT_END          0x1C        /* Magic of macro rescan boundary   */
+#define ST_QUOTE        0x1D        /* Magic for stringizing        */
+#define CAT             0x1E        /* Token concatenation delim.   */
+#define TOK_SEP         0x1F        /* Magic to wrap expanded macro */
+/* In OLD_PREP mode.    */
+#define COM_SEP         0x1F        /* Comment of 0-length          */
+
+#define MAC_PARM        0x7F        /* Macro parameter signal       */
+
+/* Special character types  */
+#define LET             1           /* Letter (alphabet and _)      */
+#define DIG             2           /* Digit                        */
+#define DOT             4           /* . might start a number       */
+#define PUNC            8           /* Punctuators and operators    */
+#define QUO             0x10        /* Both flavors of quotation ",'*/
+#define SPA             0x20        /* White spaces                 */
+#define HSP             0x40
+                    /* Horizontal white spaces (' ', '\t', TOK_SEP) */
+
+/*
+ * Codes for operators used in #if expression.
+ * The value of the scanned operator is stored in 'openum'.
+ */
+#define INV             0           /* Invalid, must be zero        */
+#define OP_EOE          INV         /* End of expression            */
+#define VAL             1           /* Value (operand)              */
+#define OP_LPA          2           /* (    */
+/* The following are unary.     */
+#define FIRST_UNOP      OP_PLU      /* First unary operator         */
+#define OP_PLU          3           /* +    */
+#define OP_NEG          4           /* -    */
+#define OP_COM          5           /* ~    */
+#define OP_NOT          6           /* !    */
+#define LAST_UNOP       OP_NOT      /* Last unary operator          */
+/* The following are binary.    */
+#define FIRST_BINOP     OP_MUL      /* First binary operator        */
+#define OP_MUL          7           /* *    */
+#define OP_DIV          8           /* /    */
+#define OP_MOD          9           /* %    */
+#define OP_ADD          10          /* +    */
+#define OP_SUB          11          /* -    */
+#define OP_SL           12          /* @<<   */
+#define OP_SR           13          /* >>   */
+#define OP_LT           14          /* <    */
+#define OP_LE           15          /* <=   */
+#define OP_GT           16          /* >    */
+#define OP_GE           17          /* >=   */
+#define OP_EQ           18          /* ==   */
+#define OP_NE           19          /* !=   */
+#define OP_AND          20          /* &    */
+#define OP_XOR          21          /* ^    */
+#define OP_OR           22          /* |    */
+#define OP_ANA          23          /* &&   */
+#define OP_ORO          24          /* ||   */
+#define OP_QUE          25          /* ?    */
+#define OP_COL          26          /* :    */
+#define LAST_BINOP      OP_COL      /* Last binary operator         */
+/* Parenthesis  */
+#define OP_RPA          27          /* )    */
+#define OP_END          28          /* End of expression marker     */
+#define OP_FAIL         (OP_END + 1)    /* For error returns        */
+
+/*
+ * The following are operators used in macro definition only.
+ */
+/* In STD and POST_STD modes.   */
+#define OP_STR          30          /* #    */
+#define OP_CAT          31          /* ##   */
+#define OP_ELL          32          /* ...  */
+
+/*
+ * The following are C source operators or punctuators,
+ * not preprocessing operators.
+ * Note: "sizeof", "defined" are read as identifier for convenience.
+ */
+#define OP_1            33  /* Any other single byte ops or puncs   */
+                                    /* =, ., ;, [, ], {, }, ','     */
+#define OP_2            34  /* Any other two bytes operators        */
+                    /* &=, |=, ++, +=, --, -=, ->, %=, *=, /=, ^=,  */
+#define OP_3            35  /* Three bytes operators :  @<<=, >>=    */
+/*
+ * The following are operators spelled in digraphs.
+ */
+/* In STD and POST_STD modes.   */
+#define OP_LBRACE_D     0x40        /* <% i.e. {    */
+#define OP_RBRACE_D     0x41        /* %> i.e. }    */
+#define OP_LBRCK_D      0x42        /* <: i.e. [    */
+#define OP_RBRCK_D      0x43        /* :> i.e. ]    */
+#define OP_SHARP_D      0x44        /* %: i.e. #    */
+#define OP_DSHARP_D     0x45        /* %:%: i.e. ## */
+#define OP_DIGRAPH      0x40    /* (OP_*_D & OP_DIGRAPH) == 0x40    */
+
+/*
+ * The following are for lexical scanning only.
+ */
+/* Token types          */
+#define NO_TOKEN        0
+#define NAM             65          /* Identifier (name, keyword)   */
+#define NUM             66          /* Preprocessing number         */
+#define STR             67          /* Character string literal     */
+#define CHR             69          /* Integer character constant   */
+
+/* In STD and POST_STD modes.   */
+#define WSTR            68          /* Wide string literal          */
+#define WCHR            70          /* Wide character constant      */
+
+#define OPE             71          /* Operator or punctuator       */
+#define SPE             72          /* Unknown token (@ or others)  */
+#define SEP             73          /* Token separator or magics    */
+
+/*
+ * The following are values of 'mcpp_debug' variable which is set by the
+ * arguments of '#pragma MCPP debug' directive.
+ */
+#define PATH            1
+#define TOKEN           2
+#define EXPAND          4
+#define MACRO_CALL      8
+#define IF              16
+#define EXPRESSION      32
+#define GETC            64
+#define MEMORY          128
+
+/* MAC_* represent macro information types for -K option.   */
+#define MAC_CALL_START  1
+#define MAC_CALL_END    2
+#define MAC_ARG_START   3
+#define MAC_ARG_END     4
+
+/* MB_ERROR signals wrong multi-byte character sequence.    */
+#define MB_ERROR        0x8000
+
+#if MCPP_LIB && HOST_COMPILER == GNUC   \
+        && (SYS_FAMILY == SYS_UNIX && SYSTEM != SYS_CYGWIN)
+    /* For GCC 4.* on UNIXes    */
+#pragma GCC visibility push( hidden)    /* Hide these names from outside    */
+#endif
+
+/*
+ * The DEFBUF structure stores information about #defined macros.
+ * Note that DEFBUF->parmnames is parameter names catenated with commas,
+ * which is saved for the check of redefinition for STD mode.
+ * 'parmnames' and 'repl' are allocated to the area succeding to name.
+ */
+typedef struct defbuf {
+        struct defbuf * link;       /* Pointer to next def in chain */
+        short           nargs;      /* Number of parameters         */
+        char *          parmnames;  /* -> Parameter names catenated by ','  */
+        char *          repl;       /* Pointer to replacement text  */
+        const char *    fname;      /* Macro is defined in the source file  */
+        long            mline;      /*          at the line.        */
+        char            push;       /* Push level indicator         */
+        char            name[1];    /* Macro name                   */
+} DEFBUF;
+
+/*
+ * The FILEINFO structure stores information about open files and macros
+ * being expanded.
+ */
+typedef struct fileinfo {
+        char *          bptr;       /* Current pointer into buffer  */
+        long            line;       /* Current line number of file  */
+        FILE *          fp;         /* Source file if non-null      */
+        long            pos;        /* Position next to #include    */
+        struct fileinfo *   parent; /* Link to includer             */
+        struct ifinfo *     initif; /* Initial ifstack (return there on EOF)*/
+        int             sys_header; /* System header file or not    */
+        int             include_opt;        /* Specified by -include option */
+        const char **   dirp;       /* Include directory the file resides   */
+        const char *    src_dir;    /* Directory of source file     */
+        const char *    real_fname; /* Real file name               */
+        const char *    full_fname; /* Real full path list          */
+        char *          filename;   /* File/macro name (maybe changed)      */
+        char *          buffer;     /* Buffer of current input line */
+#if MCPP_LIB
+        /* Save output functions during push/pop of #includes   */
+        int (* last_fputc)  ( int c, OUTDEST od);
+        int (* last_fputs)  ( const char * s, OUTDEST od);
+        int (* last_fprintf)( OUTDEST od, const char * format, ...);
+#endif
+} FILEINFO;
+
+/*
+ * IFINFO stores information of conditional compilation.
+ */
+typedef struct ifinfo {
+        int             stat;       /* State of compilation         */
+        long            ifline;     /* Line #if started             */
+        long            elseline;   /* Line #else started           */
+} IFINFO;
+
+/*
+ * These bits are set in IFINFO.stat
+ */
+#define WAS_COMPILING   1           /* TRUE if compile set at entry */
+#define ELSE_SEEN       2           /* TRUE when #else processed    */
+#define TRUE_SEEN       4           /* TRUE when #if TRUE processed */
+
+#define compiling       ifstack[0].stat
+
+#define FP2DEST(fp) \
+    (fp == fp_out) ? OUT : \
+    ((fp == fp_err) ? ERR : \
+    ((fp == fp_debug) ? DBG : \
+    ((OUTDEST) -1)))
+
+/* VAL_SIGN structure stores information about evaluated number.    */
+typedef struct val_sign {
+        expr_t          val;        /* Value                        */
+        int             sign;       /* Signed, unsigned, error      */
+} VAL_SIGN;
+
+/* Values of VAL_SIGN.sign. */
+#define SIGNED          1
+#define UNSIGNED        0
+#define VAL_ERROR       (-1)
+
+/* LINE_COL stores information of line and column data  */
+typedef struct line_col {
+        long            line;
+        size_t          col;
+} LINE_COL;
+
+/* Value of macro_line on macro call error.         */
+#define MACRO_ERROR     (-1L)
+
+/*
+ * Values of insert_sep (flag of insertion of token separator).
+ * Used only in POST_STD mode.
+ */
+#define NO_SEP          0   /* No separator is inserted             */
+#define INSERT_SEP      1   /* Next get_ch() insert a separator     */
+#define INSERTED_SEP    2   /* Last get_ch() Inserted a separator   */
+
+#define str_eq(s1, s2)  (strcmp(s1, s2) == 0)
+
+#ifndef IO_SUCCESS
+#define IO_SUCCESS      0
+#endif
+#ifndef IO_ERROR
+#define IO_ERROR        (errno ? errno : 1)
+#endif
+
+/*
+ * Externs
+ */
+
+/* The minimum translation limits specified by the Standards.       */
+extern struct std_limits_ {
+        long    str_len;            /* Least maximum of string len. */
+        size_t  id_len;             /* Least maximum of ident len.  */
+        int     n_mac_pars;         /* Least maximum of num of pars.*/
+        int     exp_nest;           /* Least maximum of expr nest   */
+        int     blk_nest;           /* Least maximum of block nest  */
+        int     inc_nest;           /* Least maximum of include nest*/
+        long    n_macro;            /* Least maximum of num of macro*/
+        long    line_num;           /* Maximum source line number   */
+} std_limits;
+/* The boolean flags specified by the execution options.    */
+extern struct option_flags_ {
+        int     c;                  /* -C option (keep comments)    */
+        int     k;                  /* -k option (keep white spaces)*/
+        int     z;      /* -z option (no-output of included file)   */
+        int     p;                  /* -P option (no #line output)  */
+        int     q;                  /* -Q option (diag to mcpp.err) */
+        int     v;                  /* -v option (verbose)          */
+        int     trig;               /* -3 option (toggle trigraphs) */
+        int     dig;                /* -2 option (toggle digraphs)  */
+        int     lang_asm;           /* -a option (assembler source) */
+        int     no_source_line;     /* Do not output line in diag.  */
+        int     dollar_in_name;     /* Allow $ in identifiers       */
+} option_flags;
+
+extern int      mcpp_mode;          /* Mode of preprocessing        */
+extern int      stdc_val;           /* Value of __STDC__            */
+extern long     stdc_ver;           /* Value of __STDC_VERSION__    */
+extern long     cplus_val;          /* Value of __cplusplus for C++ */
+extern int      stdc2;      /* cplus_val or (stdc_ver >= 199901L)   */
+extern int      stdc3;      /* (stdc_ver or cplus_val) >= 199901L   */
+extern int      standard;           /* mcpp_mode is STD or POST_STD */
+extern int      std_line_prefix;    /* #line in C source style      */
+extern int      warn_level;         /* Level of warning             */
+extern int      errors;             /* Error counter                */
+extern long     src_line;           /* Current source line number   */
+extern int      wrong_line;         /* Force #line to compiler      */
+extern int      newlines;           /* Count of blank lines         */
+extern int      keep_comments;      /* Don't remove comments        */
+extern int      keep_spaces;        /* Don't remove white spaces    */
+extern int      include_nest;       /* Nesting level of #include    */
+extern const char *     null;       /* "" string for convenience    */
+extern const char **    inc_dirp;   /* Directory of #includer       */
+extern const char *     cur_fname;  /* Current source file name     */
+extern int      no_output;          /* Don't output included file   */
+extern int      in_directive;       /* In process of #directive     */
+extern int      in_define;          /* In #define line              */
+extern int      in_getarg;          /* Collecting arguments of macro*/
+extern int      in_include;         /* In #include line             */
+extern int      in_if;              /* In #if and non-skipped expr. */
+extern long     macro_line;         /* Line number of macro call    */
+extern char *   macro_name;         /* Currently expanding macro    */
+extern int      openum;             /* Number of operator or punct. */
+extern IFINFO *     ifptr;          /* -> current ifstack item      */
+extern FILEINFO *   infile;         /* Current input file or macro  */
+extern FILE *   fp_in;              /* Input stream to preprocess   */
+extern FILE *   fp_out;             /* Output stream preprocessed   */
+extern FILE *   fp_err;             /* Diagnostics stream           */
+extern FILE *   fp_debug;           /* Debugging information stream */
+extern int      insert_sep;         /* Inserted token separator flag*/
+extern int      mkdep;              /* Output source file dependency*/
+extern int      mbchar;             /* Encoding of multi-byte char  */
+extern int      mbchk;              /* Possible multi-byte char     */
+extern int      bsl_in_mbchar;      /* 2nd byte of mbchar has '\\'  */
+extern int      bsl_need_escape;/* '\\' in mbchar should be escaped */
+extern int      mcpp_debug;         /* Class of debug information   */
+extern long     in_asm;             /* In #asm - #endasm block      */
+extern jmp_buf  error_exit;         /* Exit on fatal error          */
+extern char *   cur_fullname;       /* Full name of current source  */
+extern short *  char_type;          /* Character classifier         */
+extern char *   workp;              /* Free space in work[]         */
+extern char * const     work_end;   /* End of work[] buffer         */
+extern char     identifier[];       /* Lastly scanned name          */
+extern IFINFO   ifstack[];          /* Information of #if nesting   */
+extern char     work_buf[];
+        /* Temporary buffer for directive line and macro expansion  */
+
+/* main.c   */
+extern void     un_predefine( int clearall);
+                /* Undefine predefined macros   */
+
+/* directive.c  */
+extern void     directive( void);
+                /* Process #directive line      */
+extern DEFBUF * do_define( int ignore_redef, int predefine);
+                /* Do #define directive         */
+extern DEFBUF * look_id( const char * name);
+                /* Look for a #define'd thing   */
+extern DEFBUF **    look_prev( const char * name, int * cmp);
+                /* Look for place to insert def.*/
+extern DEFBUF * look_and_install( const char * name, int numargs
+        , const char * parmnames, const char * repl);
+                /* Look and insert macro def.   */
+extern DEFBUF * install_macro( const char * name, int numargs
+        , const char * parmnames, const char * repl, DEFBUF ** prevp, int cmp
+        , int predefine);
+                /* Install a def to symbol table*/
+extern int      undefine( const char * name);
+                /* Delete from symbol table     */
+extern void     dump_a_def( const char * why, const DEFBUF * dp, int newdef
+        , int comment, FILE * fp);
+                /* Dump a specific macro def    */
+extern void     dump_def( int comment, int K_opt);
+                /* Dump current macro defs      */
+
+/* eval.c   */
+extern expr_t   eval_if( void);
+                /* Evaluate #if expression      */
+extern VAL_SIGN *   eval_num( const char * nump);
+                /* Evaluate preprocessing number*/
+
+/* expand.c */
+extern char *   (* expand_macro)( DEFBUF * defp, char * out, char * out_end
+        , LINE_COL line_col, int * pragma_op);
+                /* Expand a macro completely    */
+extern void     expand_init( int compat, int strict_ansi);
+                /* Initialize expand_macro()    */
+extern DEFBUF * is_macro( char ** cp);
+                /* The sequence is a macro call?*/
+
+/* mbchar.c     */
+extern size_t   (* mb_read)( int c1, char ** in_pp, char ** out_pp);
+                /* Read mbchar sequence         */
+extern const char *     set_encoding( char * name, char * env, int pragma);
+                /* Multi-byte char encoding     */
+extern void     mb_init( void);
+                /* Initialize mbchar variables  */
+extern uexpr_t  mb_eval( char ** seq_pp);
+                /* Evaluate mbchar in #if       */
+extern int      last_is_mbchar( const char * in, int len);
+                /* The line ends with MBCHAR ?  */
+
+/* support.c    */
+extern int      get_unexpandable( int c, int diag);
+                /* Get next unexpandable token  */
+extern void     skip_nl( void);
+                /* Skip to the end of the line  */
+extern int      skip_ws( void);
+                /* Skip over white-spaces       */
+extern int      scan_token( int c, char ** out_pp, char * out_end);
+                /* Get the next token           */
+extern char *   scan_quote( int delim, char * out, char * out_end, int diag);
+                /* Scan a quoted literal        */
+extern int      id_operator( const char * name);
+                /* Check identifier-like ops    */
+extern void     expanding( const char * name, int to_be_freed);
+                /* Save macro name expanding    */
+extern void     clear_exp_mac( void);
+                /* Clear expanding macro infs   */
+extern int      get_ch( void);
+                /* Get the next char from input */
+extern int      cnv_trigraph( char * in);
+                /* Do trigraph replacement      */
+extern int      cnv_digraph( char * in);
+                /* Convert digraphs to usual tok*/
+extern void     unget_ch( void);
+                /* Push back the char to input  */
+extern FILEINFO *   unget_string( const char * text, const char * name);
+                /* Push back the string to input*/
+extern char *   save_string( const char * text);
+                /* Stuff string in malloc mem.  */
+extern FILEINFO *   get_file( const char * name, const char * src_dir
+        , const char * fullname, size_t bufsize, int include_opt);
+                /* New FILEINFO initialization  */
+extern char *   (xmalloc)( size_t size);
+                /* Get memory or die            */
+extern char *   (xrealloc)( char * ptr, size_t size);
+                /* Reallocate memory or die     */
+extern LINE_COL *   get_src_location( LINE_COL * p_line_col);
+                /* Get location on source file  */
+extern void     cfatal( const char * format, const char * arg1, long arg2
+        , const char * arg3);
+                /* Print a fatal error and exit */
+extern void     cerror( const char * format, const char * arg1, long arg2
+        , const char * arg3);
+                /* Print an error message       */
+extern void     cwarn( const char * format, const char * arg1, long arg2
+        , const char * arg3);
+                /* Print a warning message      */
+extern void     dump_string( const char * why, const char * text);
+                /* Dump text readably           */
+extern void     dump_unget( const char * why);
+                /* Dump all ungotten junk       */
+/* Support for alternate output mechanisms (e.g. memory buffers) */
+extern int      (* mcpp_fputc)( int c, OUTDEST od),
+                (* mcpp_fputs)( const char * s, OUTDEST od),
+                (* mcpp_fprintf)( OUTDEST od, const char * format, ...);
+
+/* system.c */
+extern void     do_options( int argc, char ** argv, char ** in_pp
+        , char ** out_pp);
+                /* Process command line args    */
+extern void     init_sys_macro( void);
+                /* Define system-specific macro */
+extern void     at_start( void);
+                /* Commands prior to main input */
+extern void     put_depend( const char * filename);
+                /* Output source dependency line*/
+extern int      do_include( int next);
+                /* Process #include directive   */
+extern void     add_file( FILE * fp, const char * src_dir
+        , const char * filename, const char * fullname, int include_opt);
+                /* Chain the included file      */
+extern void     sharp( FILEINFO * sharp_file, int marker);
+                /* Output # line number         */
+extern void     do_pragma( void);
+                /* Process #pragma directive    */
+extern void     put_asm( void);
+                /* Putout an asm code line      */
+extern void     do_old( void);
+                /* Process older directives     */
+extern void     at_end( void);
+                /* Do the final commands        */
+extern void     print_heap( void);
+                /* Print blocks of heap memory  */
+#if ! HOST_HAVE_STPCPY
+extern char *   stpcpy( char * dest, const char * src);
+                /* Non-Standard library function*/
+#endif
+
+#if MCPP_LIB    /* Setting to use mcpp as a subroutine  */
+/* directive.c  */
+extern void     clear_symtable( void);
+                /* Free all macro definitions   */
+/* system.c     */
+extern void     clear_filelist( void);
+                /* Free filename and directory list     */
+/* The following 5 functions are to Initialize static variables.    */
+/* directive.c  */
+extern void     init_directive( void);
+/* eval.c   */
+extern void     init_eval( void);
+/* support.c    */
+extern void     init_support( void);
+/* system.c */
+extern void     init_system( void);
+
+#if HOST_COMPILER == GNUC && (SYS_FAMILY == SYS_UNIX && SYSTEM != SYS_CYGWIN)
+#pragma GCC visibility pop
+#endif
+#endif
+
+#if HOST_HAVE_STPCPY && !defined(stpcpy)
+extern char *   stpcpy( char * dest, const char * src);
+#endif
+@
+
+<<noconfig.h>>=
+/*
+ * noconfig.h
+ * Configurations for MCPP not using config.h.
+ *
+ * WARNING: These are default settings.  To configure for your system, you
+ *      must edit this file here and there.
+ */
+
+#define TRUE                1
+#define FALSE               0
+
+/*
+ *  'Target' means the O.S. and the compiler to which cpp is implemented.
+ *  'Host' means the O.S. and the compiler with which cpp is compiled.
+ */
+
+/* Define target operating-system.  */
+#define SYSTEM              SYS_FREEBSD
+
+/* Define target compiler.          */
+#ifndef COMPILER
+#define COMPILER            INDEPENDENT /* compiler-independent-build   */
+#endif
+
+/* Define host operating-system.    */
+#define HOST_SYSTEM         SYSTEM
+
+/* Define host compiler.            */
+#define HOST_COMPILER       GNUC
+
+/* Version message.                 */
+/* "MCPP V.2.* (200y/mm) compiled by " precedes VERSION_MSG */
+#define VERSION_MSG         "GCC 3.4"
+#if     0
+    "LCC-Win32 2006-03"
+    "Visual C 2005"
+    "Visual C 2008"
+    "BCC V.5.5"
+#endif
+
+/*
+ *      P A R T   1     Configurations for target-operating-system
+ *                      and target-compiler.
+ */
+
+/*
+ * Names of the SYSTEM (i.e. target operating system).  This is needed so that
+ * cpp can use appropriate filename conventions.
+ */
+#define SYS_UNKNOWN         0
+#define SYS_UNIX            0x1000
+#define SYS_LINUX           0x1800  /* (SYS_LINUX & 0xF000) == SYS_UNIX     */
+#define SYS_FREEBSD         0x1A00  /* (SYS_FREEBSD & 0xF000) == SYS_UNIX   */
+#define SYS_CYGWIN          0x1C00  /* (SYS_CYGWIN & 0xF000) == SYS_UNIX    */
+#define SYS_MAC             0x1E00  /* (SYS_MAC & 0xF000) == SYS_UNIX       */
+#define SYS_WIN             0x7000
+#define SYS_WIN32           0x7400  /* (SYS_WIN32 & 0xF000) == SYS_WIN      */
+#define SYS_WIN64           0x7800  /* (SYS_WIN64 & 0xF000) == SYS_WIN      */
+#define SYS_MINGW           0x7C00  /* (SYS_MINGW & 0xF000) == SYS_WIN      */
+
+/* COMPILER */
+#define COMPILER_UNKNOWN    0
+#define MSC                 0x7400  /* Microsoft C, Visual C++      */
+#define BORLANDC            0x7440  /* Borland C    */
+#define LCC                 0x74C0  /* LCC-Win32    */
+#define GNUC                0x00E0  /* GNU C (GCC)  */
+#define INDEPENDENT         0xFFFF  /* No target, compiler-independent build*/
+
+#define SYS_FAMILY          (SYSTEM & 0xF000)
+#define COMPILER_FAMILY     (COMPILER & 0xF0)
+#define HOST_SYS_FAMILY     (HOST_SYSTEM & 0xF000)
+
+/* Default MBCHAR (multi-byte character) encoding.  */
+#define EUC_JP          0x10    /* Extended UNIX code of JIS X 0208 */
+#define GB2312          0x20    /* EUC-like encoding of Chinese GB 2312-80  */
+#define KSC5601         0x30    /* EUC-like encoding of Korean KS C 5601    */
+#define SJIS            0x80    /* Shift-JIS encoding of JIS X 0208 */
+#define BIGFIVE         0x90    /* Encoding of Taiwanese Big Five   */
+#define ISO2022_JP      0x100   /* ISO-2022-JP (ISO-2022-JP1) encoding      */
+#define UTF8            0x1000  /* UTF-8 encoding           */
+
+/*
+ * MBCHAR means multi-byte character encoding.
+ * MBCHAR means the default encoding, and you can change the encoding by
+ *      #pragma MCPP setlocale, -e <encoding> option or environment variable
+ *      LC_ALL, LC_CTYPE, LANG.
+ * MBCHAR == 0 means not to recognize any multi-byte character encoding.
+ */
+
+/*
+ * In order to predefine target-system-dependent macros,
+ * several macros are defined here:
+ * *_OLD define the macro beginning with an alphabetic letter,
+ * *_STD, *_STD?, *_EXT, *_EXT2 define the macro beginning with an '_'.
+ * *_STD1 define the macro beginning with '__' and ending with an alphanumeric
+ *      letter.
+ * *_STD2 define the macro beginning with '__' and ending with '__'.
+ * These may not be defined, if they are not needed.
+ * They should not be #defined to no token or to "".
+ *
+ * SYSTEM_OLD, SYSTEM_STD1, SYSTEM_STD2, SYSTEM_EXT, SYSTEM_EXT2
+ *      define the target operating system (by name).
+ * SYSTEM_SP_OLD, SYSTEM_SP_STD     define the target-OS specific macro name
+ * COMPILER_OLD, COMPILER_STD1, COMPILER_STD2, COMPILER_EXT, COMPILER_EXT2
+ *          , COMPILER_SP_OLD, COMPILER_SP_STD
+ *      define the target compiler (by name).
+ * COMPILER_CPLUS        defines the target C++ compiler.
+ * COMPILER_SP1, COMPILER_SP2, COMPILER_SP3
+ *      define the compiler-specific macros.
+ *
+ * <macro>_VAL      specify the value of the <macro>.
+ *      If not specified, these values default to "1".
+ *      To define the value of no-token, specify as "" rather than no-token.
+ * SYSTEM_OLD, SYSTEM_STD?, COMPILER_OLD have the value of "1".
+ */
+
+/*
+ * target-compiler-dependent definitions:
+ *
+ * LINE_PREFIX  defines the output line prefix, if not "#line 123".
+ *              This should be defined as "# " to represent "# 123" format
+ *              ("#line " represents "#line 123" format).
+ *
+ * C_INCLUDE_DIR1, C_INCLUDE_DIR2   may be defined if you have a compiler-
+ *              specific include directory which is to be searched *before*
+ *              the operating-system specific directories (e.g. /usr/include).
+ * CPLUS_INCLUDE_DIR1, CPLUS_INCLUDE_DIR2, CPLUS_INCLUDE_DIR3
+ *      , CPLUS_INCLUDE_DIR4     are for C++ include directory which exist
+ *              other than C include directory.
+ * ENV_C_INCLUDE_DIR    may be defined to the name of environment-variable for
+ *              C include directory.
+ * ENV_CPLUS_INCLUDE_DIR    is name of environment-variable for C++ include
+ *              directory which exists other than ENV_C_INCLUDE_DIR.
+ * ENV_SEP      is the separator (other than space) of include-paths in an
+ *              environment-variable.  e.g. the ':' in
+ *              "/usr/abc/include:/usr/xyz/include"
+ *
+ * EMFILE       should be defined to the macro to represent errno of 'too many
+ *              open files' if the macro is different from EMFILE.
+ *
+ * ONE_PASS     should be set TRUE, if COMPILER is "one pass compiler".
+ *
+ * FNAME_FOLD   means that target-system folds upper and lower cases of
+ *              directory and file-name.
+ *
+ * SEARCH_INIT  specifies the default value of 'search_rule' (in system.c).
+ *              'search_rule' holds searching rule of #include "header.h" to
+ *              search first before searching user specified or system-
+ *              specific include directories.
+ *              CURRENT means to search the directory relative to "current
+ *              directory" which is current at cpp invocation.
+ *              SOURCE means to search the directory relative to that of the
+ *              source file (i.e. "includer").
+ *              (CURRENT & SOURCE) means to search current directory first
+ *              source directory next.
+ *              'search_rule' is initialized to SEARCH_INIT.
+ */
+#define CURRENT             1
+#define SOURCE              2
+
+#if     SYS_FAMILY == SYS_UNIX
+#define SYSTEM_OLD          "unix"
+#define SYSTEM_STD1         "__unix"
+#define SYSTEM_STD2         "__unix__"
+
+#if     SYSTEM == SYS_FREEBSD
+#define SYSTEM_EXT          "__FreeBSD__"
+#define SYSTEM_EXT_VAL      "6"     /* V.5.*: 5, V.6.*:6    */
+#endif
+
+#if     SYSTEM == SYS_LINUX
+#define SYSTEM_EXT          "__linux__"
+#endif
+
+#if     SYSTEM == SYS_MAC   /* Mac OS X */
+#define SYSTEM_EXT          "__APPLE__"
+#define FNAME_FOLD          TRUE    /* Case-insensitive file-system */
+#define FRAMEWORK1          "/System/Library/Frameworks"
+#define FRAMEWORK2          "/Library/Frameworks"
+#endif  /* SYSTEM == SYS_MAC    */
+
+#if     SYSTEM == SYS_CYGWIN
+#define SYSTEM_EXT          "__CYGWIN__"
+#define SYSTEM_EXT2         "__CYGWIN32__"
+#define MBCHAR              SJIS
+#define FNAME_FOLD          TRUE
+#define CYGWIN_ROOT_DIRECTORY   "c:/pub/compilers/cygwin"
+#endif  /* SYSTEM == SYS_CYGWIN */
+
+#ifndef MBCHAR
+#define MBCHAR              EUC_JP  /* UTF8 if you like */
+#endif
+#ifndef FNAME_FOLD
+#define FNAME_FOLD          FALSE
+#endif
+
+#endif  /* SYS_FAMILY == SYS_UNIX   */
+
+#if     SYS_FAMILY == SYS_WIN
+
+#define SYSTEM_SP_STD       "__FLAT__"
+#define SYSTEM_SP_STD_VAL   "1"
+
+#ifndef MBCHAR
+#define MBCHAR              SJIS    /* Multi-byte char is encoded in SJIS   */
+#endif
+
+#if     COMPILER == MSC
+#define CMP_NAME            "Visual C++"
+#if     _MSC_VER >= 1200    /* Visual C++ V.6.0 or later    */
+    /* When HOST == TARGET  */
+#define ONE_PASS            TRUE
+#endif
+#define COMPILER_EXT        "_MSC_VER"
+#define COMPILER_EXT_VAL    "1500"      /* VC 6.0: "1200"   */
+    /* VC 2002: "1300", VC 2003: "1310", VC 2005: "1400", VC 2008: "1500"   */
+#define COMPILER_EXT2       "_MSC_FULL_VER"
+#define COMPILER_EXT2_VAL   "150021022" /* VC 6.0: "12008804"       */
+    /* VC 2002: "13009466", VC 2003: "13103077", VC 2005: "140050320"       */
+    /* VC 2008: "150021022" */
+#define COMPILER_SP1        "_MSC_EXTENSIONS"
+#define COMPILER_SP1_VAL    "1"
+#define COMPILER_SP2        "_INTEGRAL_MAX_BITS"
+#define COMPILER_SP2_VAL    "64"        /* VC 2003, VC2005, VC2008: 64      */
+#define TARGET_HAVE_LONG_LONG       TRUE
+    /* __int64 instead of long long (VC 2.0 through 8.0)    */
+#define EXPAND_PRAGMA       TRUE
+#define HAVE_DIGRAPHS       TRUE
+#define BIGFIVE_IS_ESCAPE_FREE      TRUE
+#define SEARCH_INIT         SOURCE
+
+#elif   COMPILER == BORLANDC                /* Borland C 5.* and C++Builder */
+#define CMP_NAME            "Borland C"
+#define ONE_PASS            TRUE
+#define COMPILER_STD2       "__TURBOC__"
+#if     __BORLANDC__        /* Borland C    */
+#define COMPILER_STD2_VAL   "0x0550"
+    /* BC 5.5: "0x0550", BC 5.9: "0x5930"   */
+#define COMPILER_EXT        "__BORLANDC__"
+#define COMPILER_EXT_VAL    "0x0550"
+    /* BC 5.5: "0x0550", BC 5.9: "0x5930"   */
+#define COMPILER_CPLUS      "__BCPLUSPLUS__"
+#define COMPILER_CPLUS_VAL  "0x0550"
+    /* BC 5.5: "0x0550", BC 5.9: "0x5930"   */
+#define EXPAND_PRAGMA       TRUE
+#define SEARCH_INIT         (CURRENT & SOURCE)
+#define TARGET_HAVE_LONG_LONG       TRUE    /* __int64 instead of long long */
+#endif  /* __BORLANDC__ */
+
+#elif     COMPILER == LCC
+#define CMP_NAME            "LCC-Win32"
+#define COMPILER_STD2       "__LCC__"
+#define COMPILER_SP1        "__LCCDEBUGLEVEL"
+#define COMPILER_SP1_VAL    "0"
+#define COMPILER_SP2        "__LCCOPTIMLEVEL"
+#define COMPILER_SP2_VAL    "0"
+#define ONE_PASS            TRUE
+#define TARGET_HAVE_LONG_LONG       TRUE
+#define SJIS_IS_ESCAPE_FREE         FALSE
+
+#endif
+
+#if     SYSTEM == SYS_MINGW
+#define SYSTEM_EXT          "__MINGW__"
+#define SYSTEM_EXT2         "__MINGW32__"
+#define MSYS_ROOT_DIRECTORY "c:/pub/compilers/msys/1.0"
+#define MINGW_DIRECTORY     "c:/pub/compilers/mingw"
+#if     COMPILER == GNUC
+#define SJIS_IS_ESCAPE_FREE FALSE
+#define INC_DIR             C_INCLUDE_DIR2
+#endif
+#endif  /* SYSTEM == SYS_MINGW  */
+
+#ifndef SJIS_IS_ESCAPE_FREE
+#define SJIS_IS_ESCAPE_FREE TRUE    /* or FALSE following your compiler     */
+#endif
+
+#endif  /* SYS_FAMILY == SYS_WIN    */
+
+#if     COMPILER_FAMILY == GNUC
+#define CMP_NAME            "GCC"
+#define COMPILER_EXT        "__GNUC__"
+#define COMPILER_EXT_VAL    "3"     /* "3" for V.3.* "4" for V.4.*  */
+#define COMPILER_EXT2       "__GNUC_MINOR__"
+#define COMPILER_EXT2_VAL   "4"     /* "4" for V.3.4, "1" for V.4.1 */
+#define COMPILER_CPLUS      "__GNUG__"
+#define COMPILER_CPLUS_VAL  "3"     /* "3" for V.3.*, "4" for V.4.* */
+#define GCC_MAJOR_VERSION   3       /* Value of __GNUC__ as a digit */
+#define LINE_PREFIX         "# "
+#ifndef HAVE_DIGRAPHS
+#define HAVE_DIGRAPHS       TRUE
+#endif
+#ifndef TARGET_HAVE_LONG_LONG
+#define TARGET_HAVE_LONG_LONG       TRUE
+#endif
+#define STDC_VERSION        0L  /* 199409L for V.2.9, 0L for V.3.*,V.4.*    */
+#define CPLUS_INCLUDE_DIR1  "/usr/include/c++/3.4"  /* "/usr/include/c++/3.3.6" */  /* "/usr/include/c++/4.1.2" */
+#define CPLUS_INCLUDE_DIR2  "/usr/include/c++/3.4/backward"     /* "/usr/include/c++/3.3.6/i386-vine-linux" */  /* "/usr/include/c++/4.1.2/i486-linux-gnu" */
+/* #define CPLUS_INCLUDE_DIR3   */  /* "/usr/include/c++/3.3.6/backward"    */  /* "/usr/include/c++/4.1.2/backward"    */
+/* #define C_INCLUDE_DIR1 */    /* "/usr/lib/gcc-lib/i386-vine-linux/3.3.6/include" */  /* "/usr/lib/gcc/i486-linux-gnu/4.1.2/include" */
+/* #define C_INCLUDE_DIR2   */
+#ifndef INC_DIR
+#ifdef  C_INCLUDE_DIR1
+#define INC_DIR             C_INCLUDE_DIR1  /* GNUC version specific dir    */
+#else
+#define INC_DIR             "/usr/local/include"    /* "/usr/include"   */
+#endif
+#endif
+#ifndef ENV_C_INCLUDE_DIR
+#define ENV_C_INCLUDE_DIR   "C_INCLUDE_PATH"
+#define ENV_CPLUS_INCLUDE_DIR   "CPLUS_INCLUDE_PATH"
+#endif
+#define SEARCH_INIT         SOURCE  /* Include directory relative to source */
+/*
+ * __SIZE_TYPE__, __PTRDIFF_TYPE__ and __WCHAR_TYPE__ are predefines of GCC.
+ */
+#if GCC_MAJOR_VERSION < 3
+#define COMPILER_SP1        "__SIZE_TYPE__"
+#define COMPILER_SP2        "__PTRDIFF_TYPE__"
+#define COMPILER_SP3        "__WCHAR_TYPE__"
+#define COMPILER_SP1_VAL    "unsigned int"
+#define COMPILER_SP2_VAL    "int"
+#define COMPILER_SP3_VAL    "int"
+    /* SYS_FREEBSD: "int", SYS_CYGWIN, SYS_MINGW: "short unsigned int"
+            , others: "long int"  */
+#endif  /* GCC_MAJOR_VERSION < 3    */
+/* On GCC V.3.*, V.4.*, these macros are known by mcpp_g*_predef_*.h files. */
+#endif  /* COMPILER_FAMILY == GNUC  */
+
+#if     COMPILER == INDEPENDENT
+/* specifications of compiler-independent build  */
+#define LINE_PREFIX         "#line "
+#define STD_LINE_PREFIX     TRUE    /* Output #line by C source format      */
+#define HAVE_DIGRAPHS       TRUE    /* Output digraphs as it is     */
+#define SEARCH_INIT         SOURCE  /* Include directory relative to source */
+#define SJIS_IS_ESCAPE_FREE         TRUE    /* Do not treat SJIS specially  */
+#define BIGFIVE_IS_ESCAPE_FREE      TRUE    /* Do not treat specially       */
+#define ISO2022_JP_IS_ESCAPE_FREE   TRUE    /* Do not treat specially       */
+#define TARGET_HAVE_LONG_LONG       TRUE    /* dummy    */
+#define STDC_VERSION        199409L /* Initial value of __STDC_VERSION__    */
+#endif
+
+/*
+ * Each OS has some different target architectures.  The followings define
+ * the target CPU.
+ * MCPP defines some predefined macros based on the CPU macro, and possibly
+ * redefine them on an execution time by some options.
+ */
+#if     defined (__x86_64__) || defined (__amd64__) || defined (_M_AMD64)    \
+            || defined (_AMD64_) || defined (_X64_)
+#define CPU                 "x86_64"
+#elif   defined (__ppc64__) || defined (__powerpc64__)
+#define CPU                 "ppc64"
+#elif   defined (__ppc__) || defined (__powerpc__)
+#define CPU                 "ppc"
+#else   /* Defaults to i386 */
+#define CPU                 "i386"
+#endif
+
+/*
+ * defaults
+ */
+
+#ifdef  SYSTEM_EXT
+#ifndef SYSTEM_EXT_VAL
+#define SYSTEM_EXT_VAL      "1"
+#endif
+#endif
+#ifdef  SYSTEM_EXT2
+#ifndef SYSTEM_EXT2_VAL
+#define SYSTEM_EXT2_VAL     "1"
+#endif
+#endif
+#ifdef  COMPILER_STD1
+#ifndef COMPILER_STD1_VAL
+#define COMPILER_STD1_VAL   "1"
+#endif
+#endif
+#ifdef  COMPILER_STD2
+#ifndef COMPILER_STD2_VAL
+#define COMPILER_STD2_VAL   "1"
+#endif
+#endif
+#ifdef  COMPILER_EXT
+#ifndef COMPILER_EXT_VAL
+#define COMPILER_EXT_VAL    "1"
+#endif
+#endif
+#ifdef  COMPILER_EXT2
+#ifndef COMPILER_EXT2_VAL
+#define COMPILER_EXT2_VAL   "1"
+#endif
+#endif
+#ifdef  COMPILER_CPLUS
+#ifndef COMPILER_CPLUS_VAL
+#define COMPILER_CPLUS_VAL  "1"
+#endif
+#endif
+
+#ifndef LINE_PREFIX
+#define LINE_PREFIX         "#line "
+#define STD_LINE_PREFIX     TRUE    /* C source format              */
+#else
+#ifndef STD_LINE_PREFIX
+#define STD_LINE_PREFIX     FALSE   /* Compiler-dependent format    */
+#endif
+#endif
+
+#ifndef HAVE_DIGRAPHS
+#define HAVE_DIGRAPHS       FALSE
+#endif
+
+#ifndef ENV_C_INCLUDE_DIR
+#define ENV_C_INCLUDE_DIR   "INCLUDE"
+#endif
+#ifndef ENV_CPLUS_INCLUDE_DIR
+#define ENV_CPLUS_INCLUDE_DIR   "CPLUS_INCLUDE"
+#endif
+
+#ifndef ENV_SEP
+#if     SYS_FAMILY == SYS_WIN
+#define ENV_SEP             ';'
+#else
+#define ENV_SEP             ':'
+#endif
+#endif
+
+#ifndef ONE_PASS
+#define ONE_PASS            FALSE
+#endif
+
+#ifndef FNAME_FOLD
+#define FNAME_FOLD          TRUE
+#endif
+
+#ifndef SEARCH_INIT
+#define SEARCH_INIT         CURRENT
+#endif
+
+/*
+ * CHARBIT, UCHARMAX are respectively CHAR_BIT, UCHAR_MAX of target compiler.
+ * CHARBIT should be defined to the number of bits per character.
+ * It is needed only for processing of multi-byte character constants.
+ * UCHARMAX should be defined to the maximum value of type unsigned char
+ * or maximum value of unsigned int which is converted from type (signed)
+ * char.
+ *
+ * LONGMAX      should be defined to the LONG_MAX in <limits.h>.
+ * ULONGMAX     should be defined to the ULONG_MAX in <limits.h> or LONG_MAX
+ *              for the compiler which does not have unsigned long.
+ */
+
+#ifndef CHARBIT
+#define CHARBIT             8
+#endif
+#ifndef UCHARMAX
+#define UCHARMAX            0xFF
+#endif
+#ifndef LONGMAX
+#define LONGMAX             0x7FFFFFFFL
+#endif
+#ifndef ULONGMAX
+#define ULONGMAX            0xFFFFFFFFUL
+#endif
+
+/*
+ * Define MBCHAR (multi-byte character encoding) to SJIS, EUC_JP or other.
+ */
+#ifndef MBCHAR
+#define MBCHAR              0
+#endif
+
+/*
+ * SJIS_IS_ESCAPE_FREE means the compiler does not escape '0x5c' ('\\') in
+ * shift-JIS encoded multi-byte character.  SJIS_IS_ESCAPE_FREE == FALSE
+ * enables cpp to insert * '\\' before '\\' of the 2nd byte of SJIS code in
+ * literal.  This insertion is for the compiler-proper which can't recognize
+ * SJIS literal.
+ * BIGFIVE_IS_ESCAPE_FREE means similar case on BIGFIVE encoding.
+ * ISO2022_JP_IS_ESCAPE_FREE means similar case on ISO2022_JP encoding.
+ */
+#ifndef SJIS_IS_ESCAPE_FREE
+#define SJIS_IS_ESCAPE_FREE     FALSE   /* or TRUE following your compiler  */
+#endif
+#ifndef BIGFIVE_IS_ESCAPE_FREE
+#define BIGFIVE_IS_ESCAPE_FREE  FALSE   /* or TRUE following your compiler  */
+#endif
+#ifndef ISO2022_JP_IS_ESCAPE_FREE
+#define ISO2022_JP_IS_ESCAPE_FREE   FALSE   /* or TRUE following compiler   */
+#endif
+
+/*
+ *      P A R T   2     Configurations for host-compiler.
+ *
+ *      WARNING: In case of HOST_COMPILER differs from COMPILER, you must
+ *          edit here and there of this part.
+ */
+#if     HOST_COMPILER == GNUC
+#if     __GNUC__ >= 3
+#define HAVE_INTMAX_T               TRUE
+#define HAVE_INTTYPES_H             TRUE
+#define HAVE_STDINT_H               TRUE
+#endif
+#define HOST_HAVE_LONG_LONG         TRUE
+#if     HOST_SYSTEM == SYS_LINUX
+#define HOST_HAVE_STPCPY            TRUE
+#endif
+#if     HOST_SYSTEM == SYS_MAC
+#define HOST_HAVE_STPCPY            TRUE
+#endif
+
+#elif   HOST_COMPILER == LCC
+#define HOST_HAVE_LONG_LONG         TRUE
+
+#elif   HOST_COMPILER == MSC
+#define HOST_HAVE_LONG_LONG         TRUE
+
+#elif   HOST_COMPILER == BORLANDC
+#if     __BORLANDC__ >= 0x550
+#define HOST_HAVE_LONG_LONG         TRUE
+#endif
+#define HOST_HAVE_STPCPY            TRUE
+#if     __STDC__
+#define stpcpy( dest, src)  __stpcpy__( dest, src)
+#endif
+#endif
+
+#ifndef HAVE_INTMAX_T
+#define HAVE_INTMAX_T               FALSE
+#endif
+
+/* The host compiler has the type long long int ?   */
+#ifndef HOST_HAVE_LONG_LONG
+#define HOST_HAVE_LONG_LONG         FALSE
+#endif
+
+/*
+ * This definitions should be set TRUE, if *both* of the target
+ * and the host compilers have long long type.
+ */
+#if TARGET_HAVE_LONG_LONG && HOST_HAVE_LONG_LONG
+#define HAVE_LONG_LONG      TRUE
+#endif
+
+/*
+ * Define the format specifier of intmax_t or long long for
+ * fprintf( fp_debug,).
+ * Both of target COMPILER and HOST_COMPILER should have long long.
+ */
+#if     HAVE_LONG_LONG
+#if     HOST_COMPILER == BORLANDC   \
+        || (HOST_COMPILER == MSC && _MSC_VER < 1400)    \
+        || HOST_SYSTEM == SYS_MINGW
+#define LL_FORM             "I64"   /* Format specifier for __int64 */
+#endif
+#ifndef LL_FORM
+#define LL_FORM             "ll"    /* C99: for long long, "j" for intmax_t */
+#endif
+#endif
+
+#ifndef HOST_HAVE_STPCPY
+#define HOST_HAVE_STPCPY            FALSE
+#endif
+
+/*
+ * Declaration of standard library functions and macros.
+ */
+
+/* stdin, stdout, stderr, FILE, NULL, fgets(), fputs() and other functions. */
+#include    "stdio.h"
+
+/* PATHMAX is the maximum length of path-list on the host system.   */
+/* _POSIX_* only to get PATH_MAX    */
+#define _POSIX_             1
+#define _POSIX_SOURCE       1
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE     1
+#define _POSIX_C_SOURCE_defined     1
+#endif
+#include    "limits.h"
+#undef  _POSIX_
+#undef  _POSIX_SOURCE
+#ifdef  _POSIX_C_SOURCE_defined
+#undef  _POSIX_C_SOURCE
+#undef  _POSIX_C_SOURCE_defined
+#endif
+#ifdef  PATH_MAX
+#define PATHMAX     PATH_MAX        /* Posix macro  */
+#else
+#define PATHMAX     FILENAME_MAX
+#endif
+
+/* islower(), isupper(), toupper(), isdigit(), isxdigit(), iscntrl()        */
+#include    "ctype.h"
+
+/* errno    */
+#include    "errno.h"
+
+#include    "string.h"
+#include    "stdlib.h"
+#include    "time.h"
+#include    "setjmp.h"
+
+/* For debugging malloc systems by kmatsui  */
+#if     KMMALLOC && _MEM_DEBUG
+#include        "xalloc.h"
+#endif
+
+@
+
+<<system.h>>=
+/*-
+ * Copyright (c) 1998, 2002-2008 Kiyoshi Matsui <kmatsui@t3.rim.or.jp>
+ * All rights reserved.
+ *
+ * Some parts of this code are derived from the public domain software
+ * DECUS cpp (1984,1985) written by Martin Minow.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+
+/*
+ *                          S Y S T E M . H
+ *                  S y s t e m   D e p e n d e n t
+ *              D e f i n i t i o n s   f o r   M C P P
+ *
+ * Definitions in this file may be edited to configure MCPP for particular
+ * operating systems and compiler configurations.
+ *
+ * Note:  MCPP assumes the system implement the Ascii character set.
+ * If this is not the case, you will have to do some editing here and there.
+ */
+
+#define SYSTEM_H
+
+#if     HAVE_CONFIG_H
+#include    "configed.h"
+#else
+#include    "noconfig.h"
+#endif
+
+/* Some system has a wrong definition of UCHAR_MAX.  See cpp-test.html#5.1.3 */
+#if     UCHARMAX < -255
+/* The definition of UCHARMAX (possibly UCHAR_MAX too) is wrong.    */
+/* Define it as a signed int value, not as an unsigned value.       */
+#undef  UCHARMAX
+#define UCHARMAX    ((1 @<< CHAR_BIT) - 1)
+#endif
+
+/*
+ *      PART 1 and PART 2 are defined in the above header files.
+ */
+
+/*
+ *      P A R T   1     Configurations for target-operating-system
+ *                      and target-compiler.
+ */
+
+/*
+ *      P A R T   2     Configurations for host-compiler.
+ */
+
+/*
+ *      P A R T   3     Configurations for default settings, typedefs and
+ *                      translation limits.
+ */
+
+/*
+ * The variable 'mcpp_mode' specifies the mode of preprocessing as one of
+ *          OLD_PREP, KR, STD, or POST_STD.
+ *      Those modes have many differences each other --
+ *          i.e. handling of translation phases; handling of some
+ *          preprocessing tokens; availability of some directives; way of
+ *          macro expansion;
+ *          -- as follows.
+ *
+ * KR       Actual arguments of a macro are expanded (after substitution)
+ *          with rest of the replacement text and the subsequent source text.
+ *      ## in macro definition has no significance to cpp.  The surrounding
+ *          tokens are macro-expanded separately.  Also, # has no significance
+ *          to cpp.  The following token is expanded.
+ *      Directly or intermediately recursive macro call causes an error.
+ *      <backslash><newline> sequence is deleted only in string literals
+ *          and in #define directive lines.
+ *      sizeof (type) can be used in #if line.
+ *      KR corresponds to the "K&R 1st."
+ *
+ * OLD_PREP     In addition to the KR specifications, this mode has the
+ *          following characteristics (and some others).
+ *      Converts comment to 0 space instead of 1 space.
+ *      Expands the parameter like spelling in string literal as a macro.
+ *      Does not check unmatched pair of '"' or '\''.
+ *      OLD_PREP corresponts to "Reiser model" cpp.
+ *
+ * STD      Standard conforming mode.
+ *      <backslash><newline> sequence is always deleted after trigraph
+ *          conversion and before tokenization.
+ *      Digraph sequences are recognized as tokens.
+ *      Actual arguments of a macro are expanded separately prior to
+ *          re-scanning of the replacement text.
+ *      The name in the replacement text once expanded is not re-expanded,
+ *          thus preventing recursive death.
+ *      ## in macro definition concatenates tokens.  The tokens are not
+ *          expanded.  The concatenated token is expanded by rescanning.
+ *      # in macro definition stringizes the following argument.  The argument
+ *          is not expanded.  \ is inserted before " and \ in or surrounding
+ *          the string literal or character constant.
+ *      An expanded macro is surrounded by spaces to prevent unintended
+ *          token merging.
+ *
+ * POST_STD     This mode simplifies the behavior of STD mode as follows.
+ *      1. Digraph sequences are converted in translation phase 1, as
+ *          alternate characters rather than as tokens.
+ *      2. A space is inserted as a token separator between any tokens in
+ *          a source (except a macro name and the next '(' in macro
+ *          definition): thus simplifying tokenization, test of macro
+ *          redefinition and macro expansion, especially "stringization".
+ *      3. Test of macro redefinition ignores difference of parameter names,
+ *          test of which has little utility and not a little overhead.
+ *      4. #if expression forbids character constants, which have little
+ *          portability, little utility and not a little overhead.
+ *      5. Rescanning of a macro expansion is limited in the replacement
+ *          text, rest of the source file is not scanned, thus making the
+ *          syntax of "function-like" macro call more similar to that of
+ *          function call.
+ *      6. Argument of #include directive in <header.h> form is an obsolescent
+ *          feature.
+ *      7. '$' or so are not treated specially in #define directive.
+ *      8. Trigraphs, UCN (universal-character name) are not recognized.
+ *      9. Multi-byte characters in an identifier are not recognized.
+ *
+ * The following specifications are available when mode is STD or POST_STD.
+ *      preprocessing number token, digraphs,
+ *      #pragma (#pragma MCPP put_defines, #pragma MCPP warning
+ *          , #pragma MCPP debug) directive,
+ *      #error directive,
+ *      #if defined operator, #elif directive,
+ *      predefined macros __FILE__, __LINE__, __DATE__, __TIME__
+ *          , __STDC__, __STDC_VERSION__, __STDC_HOSTED__,
+ *      wide character constant, wide character string literal,
+ *      _Pragma() operator, variable-arguments macro,
+ *      macro as an argument of #include, #line directives,
+ *      escape sequences \x[hex-digits], \a, \v,
+ *      '+' option (C++ preprocessing),
+ *      'S<n>' option (re-defines __STDC__ as <n>, unpredefine some macros),
+ *      'V<n>' option (re-defines __STDC_VERSION__ or __cplusplus as <n>),
+ *      'h<n>' option (re-defines __STDC_HOSTED__ as <n>).
+ * The following specifications are available only in STD mode.
+ *      Trigraphs and UCN,
+ *      Multi-byte characters in an identifier.
+ * The following specifications are available only in KR and OLD_PREP modes.
+ *      #assert, #asm, #endasm, #put_defines, #debug and some other older
+ *          directives,
+ *      argument of #line directive other than decimal-digits.
+ */
+
+/* The values of 'mcpp_mode'.   */
+#define OLD_PREP            1           /* "Reiser" cpp mode    */
+#define KR                  2           /* K&R 1st mode         */
+#define STD                 3           /* Standard moce        */
+#define POST_STD            9           /* Special mode of MCPP */
+
+/*
+ * TRIGRAPHS_INIT   Initial value for the -3 option.  If TRUE -3
+ *              disables trigraphs, if FALSE -3 enables them.
+ * DIGRAPHS_INIT    Initial value for the -2 option.  If TRUE -2
+ *              disables digraphs, if FALSE -2 enables them.
+ * OK_UCN       Enable recognition of Universal-Character-Name sequence
+ *              by -V199901L option.
+ * OK_MBIDENT   Enable multi-byte characters in identifier by -V199901L
+ *              option.
+ * EXPAND_PRAGMA    Enable macro expansion of #pragma line (even in modes
+ *              other than C99).
+ * expr_t, uexpr_t      Type of maximum integer:
+ *              long long (unsigned long long) or longer.
+ * EXPR_MAX should be defined to the maximum value of uexpr_t.
+ */
+#define TRIGRAPHS_INIT      FALSE
+#define DIGRAPHS_INIT       FALSE
+#ifndef EXPAND_PRAGMA
+#define EXPAND_PRAGMA       FALSE
+#endif
+#define OK_UCN              TRUE
+#define OK_MBIDENT          FALSE
+
+#if     HAVE_INTMAX_T
+#if     HAVE_STDINT_H
+#include    "stdint.h"
+#elif   HAVE_INTTYPES_H
+#include    "inttypes.h"
+#endif
+typedef intmax_t    expr_t;
+typedef uintmax_t   uexpr_t;
+#else
+#if     HAVE_LONG_LONG
+#if     (HOST_COMPILER == MSC && _MSC_VER < 1500) || HOST_COMPILER == BORLANDC
+typedef __int64             expr_t;
+typedef unsigned __int64    uexpr_t;
+#else
+typedef long long           expr_t;
+typedef unsigned long long  uexpr_t;
+#endif
+#else   /* !HAVE_LONG_LONG  */
+typedef unsigned long   uexpr_t;
+typedef long            expr_t;
+#endif  /* HAVE_LONG_LONG   */
+#endif  /* HAVE_INTMAX_T    */
+
+#if     HAVE_INTMAX_T
+#define EXPR_MAX            UINTMAX_MAX
+#elif   HAVE_LONG_LONG
+#if     (HOST_COMPILER == MSC && _MSC_VER < 1400) || HOST_COMPILER == BORLANDC
+#define EXPR_MAX            0xFFFFFFFFFFFFFFFFui64
+#else
+#define EXPR_MAX            0xFFFFFFFFFFFFFFFFULL
+#endif
+#else
+#define EXPR_MAX            4294967295UL
+#endif
+
+/*
+ * Translation limits.
+ * The following definitions are used to allocate memory for work buffers.
+ *
+ * NWORK        Output buffer size.  Set this size according to your compiler-
+ *              proper.  Length of string literal should be less than NWORK
+ *              - 1.
+ *              Nevertheless, when COMPILER == GNUC || COMPILER == MSC, mcpp
+ *              uses NMACWORK as output buffer size because GNUC and Visual C
+ *              can accept very long line.
+ * NBUFF        Input buffer size after line concatenation by <backslash>
+ *              <newline>.
+ * NMACWORK     Internal work buffer size for macro definition and expansion.
+ * IDMAX        The longest identifier length.
+ * NMACPARS     The maximum number of #define parameters.
+ *              NOTE: Must be NMACPARS <= UCHARMAX.
+ * NEXP         The maximum nesting depth of #if expressions.
+ * BLK_NEST     The number of nested #if's permitted.
+ * INCLUDE_NEST The maximum nesting depth of #include.  This is needed to
+ *              prevent infinite recursive inclusion.
+ * RESCAN_LIMIT The maximum rescan times of macro expansion in STD or POST_STD
+ *              modes.
+ * PRESTD_RESCAN_LIMIT  The maximum rescan times of macro expansion in KR or
+ *              OLD_PREP modes..
+ *
+ * NBUFF should not be smaller than NWORK.
+ * NMACWORK should not be smaller than NWORK * 2.
+ *
+ * SBSIZE defines the number of hash-table slots for the macro symbol table.
+ * It must be a power of 2.
+ *
+ * MKDEP_INIT   The initial maximum number of filenames in a dependency line
+ *              of output of -M* option.  The maximum number is dynamically
+ *              enlarged in execution.
+ */
+
+#ifndef IDMAX
+#define IDMAX               0x400
+#endif
+#ifndef NMACPARS
+#define NMACPARS            0xFF
+#endif
+#ifndef NEXP
+#define NEXP                0x100
+#endif
+#ifndef BLK_NEST
+#define BLK_NEST            0x100
+#endif
+#ifndef INCLUDE_NEST
+#define INCLUDE_NEST        0x100
+#endif
+#ifndef RESCAN_LIMIT
+#define RESCAN_LIMIT        0x40
+#endif
+#ifndef PRESTD_RESCAN_LIMIT
+#define PRESTD_RESCAN_LIMIT 0x100
+#endif
+#ifndef NBUFF
+#define NBUFF               0x10000     /* Must be NWORK <= NBUFF   */
+#endif
+#ifndef NWORK
+#define NWORK               NBUFF       /* 0x1000, 0x4000, 0x10000, ..  */
+#endif
+#ifndef NMACWORK
+#define NMACWORK            (NWORK * 4) /* Must be NWORK * 2 <= NMACWORK    */
+#endif
+#ifndef SBSIZE
+#define SBSIZE              0x400
+#endif
+#ifndef MKDEP_INIT
+#define MKDEP_INIT          0x100
+#endif
+
+#if     UCHARMAX < NMACPARS
+    #error  "NMACPARS should not be greater than UCHARMAX"
+#endif
+
+#if     NBUFF < NWORK
+    #error   "NBUFF must be same or greater than NWORK"
+#endif
+#if     NMACWORK < NWORK * 2
+    #error   "NMACWORK must be same or greater than NWORK * 2"
+#endif
+
+#define SBMASK  (SBSIZE - 1)
+#if     (SBSIZE ^ SBMASK) != ((SBSIZE * 2) - 1)
+    #error  "SBSIZE must be a power of 2 !"
+#endif
+
+/*
+ * Translation limits required by the Standard.
+ *
+ * *90MIN   limits specified by C90.
+ * *99MIN   limits specified by C99.
+ * *_CPLUS_MIN  limits recommended by C++ (ISO 1998/07 Standard).
+ *
+ * SLEN*MIN     Characters in a logical source line
+ *              and characters in a string literal or wide string literal
+ *              (after concatenation).
+ * IDLEN*MIN    Significant initial characters in an internal identifier
+ *              or a macro name.
+ * NMACPARS*MIN     Parameters in one macro definition.
+ *              Arguments in one macro invocation.
+ * EXP_NEST*MIN     Nesting levels of parenthesized expressions in a full
+ *              expression.
+ * BLK_NEST*MIN     Nesting levels of conditional inclusion.
+ * INCLUDE_NEST*MIN     Nesting levels for #include files.
+ * NMACRO*MIN   Macro identifiers simultaneously defined in one translation
+ *              unit.
+ */
+#define SLEN90MIN           0x1FD
+#define IDLEN90MIN          0x1F
+#define NMACPARS90MIN       0x1F
+#define EXP_NEST90MIN       0x20
+#define BLK_NEST90MIN       8
+#define INCLUDE_NEST90MIN   8
+#define NMACRO90MIN         0x400
+
+#define SLEN99MIN           0xFFF
+#define IDLEN99MIN          0x3F
+#define NMACPARS99MIN       0x7F
+#define EXP_NEST99MIN       0x3F
+#define BLK_NEST99MIN       0x3F
+#define INCLUDE_NEST99MIN   0xF
+#define NMACRO99MIN         0xFFF
+
+#define SLEN_CPLUS_MIN      0x10000
+#define IDLEN_CPLUS_MIN     0x400
+#define NMACPARS_CPLUS_MIN  0x100
+#define EXP_NEST_CPLUS_MIN  0x100
+#define BLK_NEST_CPLUS_MIN  0x100
+#define INCLUDE_NEST_CPLUS_MIN  0x100
+#define NMACRO_CPLUS_MIN    0x10000
+
+/* LINE99LIMIT  means the line number limit of C99  */
+#define LINE99LIMIT         0x7FFFFFFF
+
+/*
+ * STDC     This macro is used for the predefined __STDC__.
+ * STDC_VERSION     is used for the value of __STDC_VERSION__.
+ * STDC_HOSTED      is used for the value of __STDC_HOSTED__.
+ */
+#if     IDMAX < IDLEN90MIN || NBUFF < SLEN90MIN + 3
+            || NWORK < SLEN90MIN + 2 || NMACPARS < NMACPARS90MIN
+            || NEXP < EXP_NEST90MIN || BLK_NEST < BLK_NEST90MIN
+#define STDC                0
+#endif
+#ifndef STDC
+#define STDC                1       /* 1 : for ISO 9899:1990 or later   */
+#endif
+
+#ifndef STDC_VERSION
+#define STDC_VERSION        0L      /* 199409L  : For conforming
+            implementation to ISO 9899:1990 / Amendment 1:1995
+            199901L : For C99   */
+#endif
+#ifndef STDC_HOSTED
+#define STDC_HOSTED         1       /* 1 : for hosted implementation,
+            0 : for free-standing implementation (C99 specification)    */
+#endif
+
+/*
+ * CPLUS specifies the default value of the pre-defined macro __cplusplus
+ * for C++ processing.
+ * The value can be changed by -V<n> option.
+ */
+#define CPLUS               1       /* 199711L for C++ Standard     */
+
 @

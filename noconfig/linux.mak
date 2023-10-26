@@ -112,20 +112,20 @@ CMACRO = -DPREPROCESSED
 #CPPFLAGS = -Wp,-v,-Q,-W3
     # for MCPP to output a bit verbose diagnosis to "mcpp.err"
 # Make a "pre-preprocessed" header file to recompile MCPP with MCPP.
-mcpp.H	: system.H noconfig.H internal.H
+mcpp.h	: system.h noconfig.h internal.h
 ifeq    ($(COMPILER), GNUC)
-	$(CC) -E -Wp,-b  $(CPPFLAGS) $(CPPOPTS) $(MEM_MACRO) -o mcpp.H preproc.c
+	$(CC) -E -Wp,-b  $(CPPFLAGS) $(CPPOPTS) $(MEM_MACRO) -o mcpp.h preproc.c
 else
 	@echo "Do 'sudo make COMPILER=GNUC install' prior to recompile."
 	@echo "Then, do 'make COMPILER=GNUC PREPROCESSED=1'."
 	@exit
 endif
-$(OBJS) : mcpp.H
+$(OBJS) : mcpp.h
 else
 CMACRO = $(MEM_MACRO) $(CPPOPTS)
-$(OBJS) : noconfig.H
+$(OBJS) : noconfig.h
 main.o directive.o eval.o expand.o support.o system.o mbchar.o:   \
-        system.H internal.H
+        system.h internal.h
 endif
 
 .c.o	:
@@ -140,7 +140,7 @@ ifeq    ($(COMPILER), GNUC)
 endif
 
 clean	:
-	-rm *.o *.so $(NAME) mcpp.H mcpp.err libmcpp.*
+	-rm *.o *.so $(NAME) mcpp.h mcpp.err libmcpp.*
 
 uninstall:
 	rm -f $(BINDIR)/$(NAME)

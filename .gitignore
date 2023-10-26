@@ -3,3 +3,5 @@
 *.stamp
 /src/mcpp
 /src/Makefile
+/src/*.h
+/src/*.c

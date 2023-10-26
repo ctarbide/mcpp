@@ -30,4 +30,8 @@ nofake.sh -Rpreproc.c -osrc/preproc.c mcpp.nw
 nofake.sh -Rsupport.c -osrc/support.c mcpp.nw
 nofake.sh -Rsystem.c -osrc/system.c mcpp.nw
 nofake.sh -Rtestmain.c -osrc/testmain.c mcpp.nw
+nofake.sh -Rconfiged.h -osrc/configed.h mcpp.nw
+nofake.sh -Rinternal.h -osrc/internal.h mcpp.nw
+nofake.sh -Rnoconfig.h -osrc/noconfig.h mcpp.nw
+nofake.sh -Rsystem.h -osrc/system.h mcpp.nw
 @

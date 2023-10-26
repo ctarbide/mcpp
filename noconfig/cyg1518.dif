@@ -1,5 +1,5 @@
-*** noconfig.H	Sat Sep 20 12:00:10 2008
---- noconfig.H.cyg1518	Sat Sep 20 14:44:41 2008
+*** noconfig.h	Sat Sep 20 12:00:10 2008
+--- noconfig.h.cyg1518	Sat Sep 20 14:44:41 2008
 ***************
 *** 15,21 ****
    */

@@ -86,20 +86,20 @@ CMACRO = -DPREPROCESSED
     # '-std=c99' option is sometimes necessary to work around 
     # the confusion of system header files
 # Make a "pre-preprocessed" header file to recompile MCPP with MCPP.
-mcpp.H	: system.H noconfig.H internal.H
+mcpp.h	: system.h noconfig.h internal.h
 ifeq    ($(COMPILER), GNUC)
-	$(CC) -v -E -Wp,-b $(CPPFLAGS) $(CPPOPTS) -o mcpp.H preproc.c
+	$(CC) -v -E -Wp,-b $(CPPFLAGS) $(CPPOPTS) -o mcpp.h preproc.c
 else
 	@echo "Do 'sudo make COMPILER=GNUC install' prior to recompile."
 	@echo "Then, do 'make COMPILER=GNUC PREPROCESSED=1'."
 	@exit
 endif
-$(OBJS) : mcpp.H
+$(OBJS) : mcpp.h
 else
 CMACRO = $(CPPOPTS)
-$(OBJS) : noconfig.H
+$(OBJS) : noconfig.h
 main.o directive.o eval.o expand.o support.o system.o mbchar.o:   \
-        system.H internal.H
+        system.h internal.h
 endif
 
 .c.o	:
@@ -114,7 +114,7 @@ ifeq    ($(COMPILER), GNUC)
 endif
 
 clean	:
-	-rm *.o *.so *.exe mcpp.H mcpp.err libmcpp.* cygmcpp.*
+	-rm *.o *.so *.exe mcpp.h mcpp.err libmcpp.* cygmcpp.*
 
 uninstall:
 	rm -f $(BINDIR)/$(NAME).exe

@@ -43,16 +43,16 @@ $(NAME) : $(OBJS)
 
 PREPROCESSED = 0
 CMACRO = $(MEM_MACRO)
-$(OBJS) : noconfig.H
+$(OBJS) : noconfig.h
 main.obj directive.obj eval.obj expand.obj support.obj system.obj mbchar.obj: \
-		system.H internal.H
+		system.h internal.h
 # To make MCPP using MCPP itself, comment out the above 5 lines and
 #		uncomment the next 5 lines.
 #PREPROCESSED = 1
 #CMACRO =
-#mcpp.H : system.H noconfig.H internal.H
-#	$(BINDIR)\$(NAME) $(CPPOPTS) $(MEM_MACRO) preproc.c mcpp.H
-#$(OBJS) : mcpp.H
+#mcpp.h : system.h noconfig.h internal.h
+#	$(BINDIR)\$(NAME) $(CPPOPTS) $(MEM_MACRO) preproc.c mcpp.h
+#$(OBJS) : mcpp.h
 
 CPPFLAGS = -DPREPROCESSED=$(PREPROCESSED)
 .c.obj	:
@@ -66,7 +66,7 @@ install :
 	copy $(NAME) $(BINDIR)\$(NAME)
 
 clean	:
-	-del *.obj *.exe mcpp.H *.lib *.dll *.exp _*.c
+	-del *.obj *.exe mcpp.h *.lib *.dll *.exp _*.c
 
 LIBDIR = \PUBLIC\COMPILERS\LCC\lib
 INCDIR = \PUBLIC\COMPILERS\LCC\include
