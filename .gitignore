@@ -5,3 +5,8 @@
 /src/Makefile
 /src/*.h
 /src/*.c
+/.gtags.*
+/GPATH
+/GRTAGS
+/GTAGS
+/HTML

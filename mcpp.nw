@@ -1,4 +1,17 @@
 
+Some questions:
+
+    - First of all: 'nofake hacking.nw | sh | sh'
+
+    - Where are substitutions made?
+
+        - nofake -R'substitute' hacking.nw
+
+        - nofake -R'replace' hacking.nw
+
+        - nofake -R'expand_' hacking.nw
+
+
 <<mcpp_lib.h>>=
 /* mcpp_lib.h: declarations of libmcpp exported (visible) functions */
 #ifndef _MCPP_LIB_H
@@ -6543,7 +6556,8 @@ static void dump_args(
          * are used instead of -a.
          */
         FALSE,          /* lang_asm:    -a (assembler source)       */
-        FALSE           /* no_source_line:  -j (no source line in diag)     */
+        FALSE,          /* no_source_line:  -j (no source line in diag)     */
+        FALSE           /* no_macro_expansion:  -0 (no macro expansion)     */
     };
 
     int     mcpp_mode = STD;        /* Mode of preprocessing        */
@@ -6590,6 +6604,7 @@ static void dump_args(
     char *      cur_fullname;
         /* Full path of current source file (i.e. infile->full_fname)       */
     int         no_source_line;     /* Do not output line in diag.  */
+    int         no_macro_expansion; /* Do no macro expansion in code */
     char        identifier[ IDMAX + IDMAX/8];       /* Current identifier   */
     int         mcpp_debug = 0;     /* != 0 if debugging now        */
 
@@ -6800,6 +6815,7 @@ static void     init_main( void)
     option_flags.c = option_flags.k = option_flags.z = option_flags.p
             = option_flags.q = option_flags.v = option_flags.lang_asm
             = option_flags.no_source_line = option_flags.dollar_in_name
+            = option_flags.no_macro_expansion
             = FALSE;
     option_flags.trig = TRIGRAPHS_INIT;
     option_flags.dig = DIGRAPHS_INIT;
@@ -7165,56 +7181,11 @@ static void mcpp_main( void)
             }
         }
 
-        /*
-         * Process each token on this line.
-         */
-        line_top = TRUE;
-        while (c != '\n' && c != CHAR_EOF) {    /* For the whole line   */
-            /*
-             * has_pragma is set to TRUE so as to execute _Pragma() operator
-             * when the psuedo macro _Pragma() is found.
-             */
-            int     has_pragma;
-
-            if ((mcpp_debug & MACRO_CALL) && ! in_directive) {
-                line_col.line = src_line;       /* Location in source   */
-                line_col.col = infile->bptr - infile->buffer - 1;
-            }
-            if (scan_token( c, (wp = out_ptr, &wp), out_wend) == NAM
-                    && (defp = is_macro( &wp)) != NULL) {   /* A macro  */
-                wp = expand_macro( defp, out_ptr, out_wend, line_col
-                        , & has_pragma);    /* Expand it completely */
-                if (line_top) {     /* The first token is a macro   */
-                    char *  tp = out_ptr;
-                    while (char_type[ *tp & UCHARMAX] & HSP)
-                        tp++;           /* Remove excessive spaces  */
-                    memmove( out_ptr, tp, strlen( tp) + 1);
-                    wp -= (tp - out_ptr);
-                }
-                if (has_pragma) {           /* Found _Pramga()      */
-                    do_pragma_op();         /* Do _Pragma() operator*/
-                    out_ptr = output;       /* Do the rest of line  */
-                    wrong_line = TRUE;      /* Line-num out of sync */
-                } else {
-                    out_ptr = wp;
-                }
-                if (keep_spaces && wrong_line && infile
-                        && *(infile->bptr) != '\n' && *(infile->bptr) != EOS) {
-                    src_col = infile->bptr - infile->buffer;
-                    /* Remember the current colums  */
-                    break;                  /* Do sharp() now       */
-                }
-            } else {                        /* Not a macro call     */
-                out_ptr = wp;               /* Advance the place    */
-                if (wrong_line)             /* is_macro() swallowed */
-                    break;                  /*      the newline     */
-            }
-            while (char_type[ c = get_ch()] & HSP) {    /* Horizontal space */
-                if (c != COM_SEP)           /* Skip 0-length comment*/
-                    *out_ptr++ = c;
-            }
-            line_top = FALSE;               /* Read over some token */
-        }                                   /* Loop for line        */
+        if (option_flags.no_macro_expansion == FALSE) {
+            <<Process each token on this line.>>
+        } else {
+            <<Process each token on this line, without expansion.>>
+        }
 
         putout( output);                    /* Output the line      */
     }                                       /* Continue until EOF   */
@@ -8896,7 +8867,7 @@ int     get_unexpandable(
                     == NAM)                     /* Identifier       */
             && fp != NULL                       /* In source !      */
             && (defp = is_macro( NULL)) != NULL) {      /* Macro    */
-        expand_macro( defp, work_buf, work_end, line_col, & has_pragma);
+        (*expand_macro)( defp, work_buf, work_end, line_col, & has_pragma);
                                                 /* Expand macro     */
         if (has_pragma)
             cerror( "_Pragma operator found in directive line"      /* _E_  */
@@ -12582,6 +12553,10 @@ Version:
             option_flags.z = TRUE;  /* No output of included file   */
             break;
 
+        case '0':
+            option_flags.no_macro_expansion = TRUE;
+            break;  /* Do no macro expansion in code */
+
         default:                            /* What is this one?    */
             usage( opt);
             break;
@@ -12961,7 +12936,7 @@ static void set_opt_list(
 
     const char * const *    lp = & list[ 0];
 
-    strcpy( optlist, "23+@:e:h:jkn:o:vzCD:I:KM:NPQS:U:V:W:");
+    strcpy( optlist, "023+@:e:h:jkn:o:vzCD:I:KM:NPQS:U:V:W:");
                                                 /* Default options  */
     while (*lp)
         strcat( optlist, *lp++);
@@ -15385,7 +15360,7 @@ void    do_pragma( void)
         do {                /* Expand all the macros in the line    */
             int     has_pragma;
             if (token_type == NAM && (defp = is_macro( &tp)) != NULL) {
-                tp = expand_macro( defp, bp, mp_end, line_col, & has_pragma);
+                tp = (*expand_macro)( defp, bp, mp_end, line_col, & has_pragma);
                 if (has_pragma)
                 cerror( "_Pragma operator found in #pragma line"    /* _E_  */
                             , NULL, 0L, NULL);
@@ -17044,6 +17019,7 @@ extern struct option_flags_ {
         int     dig;                /* -2 option (toggle digraphs)  */
         int     lang_asm;           /* -a option (assembler source) */
         int     no_source_line;     /* Do not output line in diag.  */
+        int     no_macro_expansion; /* Do no macro expansion in code*/
         int     dollar_in_name;     /* Allow $ in identifiers       */
 } option_flags;
 
@@ -18277,4 +18253,85 @@ typedef long            expr_t;
  */
 #define CPLUS               1       /* 199711L for C++ Standard     */
 
+@
+
+<<Process each token on this line.>>=
+/*
+ * Process each token on this line.
+ */
+line_top = TRUE;
+while (c != '\n' && c != CHAR_EOF) {    /* For the whole line   */
+    /*
+     * has_pragma is set to TRUE so as to execute _Pragma() operator
+     * when the psuedo macro _Pragma() is found.
+     */
+    int     has_pragma;
+
+    if ((mcpp_debug & MACRO_CALL) && ! in_directive) {
+        line_col.line = src_line;       /* Location in source   */
+        line_col.col = infile->bptr - infile->buffer - 1;
+    }
+    if (scan_token( c, (wp = out_ptr, &wp), out_wend) == NAM
+            && (defp = is_macro( &wp)) != NULL) {   /* A macro  */
+        wp = (*expand_macro)( defp, out_ptr, out_wend, line_col
+                , & has_pragma);    /* Expand it completely */
+        if (line_top) {     /* The first token is a macro   */
+            char *  tp = out_ptr;
+            while (char_type[ *tp & UCHARMAX] & HSP)
+                tp++;           /* Remove excessive spaces  */
+            memmove( out_ptr, tp, strlen( tp) + 1);
+            wp -= (tp - out_ptr);
+        }
+        if (has_pragma) {           /* Found _Pramga()      */
+            do_pragma_op();         /* Do _Pragma() operator*/
+            out_ptr = output;       /* Do the rest of line  */
+            wrong_line = TRUE;      /* Line-num out of sync */
+        } else {
+            out_ptr = wp;
+        }
+        if (keep_spaces && wrong_line && infile
+                && *(infile->bptr) != '\n' && *(infile->bptr) != EOS) {
+            src_col = infile->bptr - infile->buffer;
+            /* Remember the current colums  */
+            break;                  /* Do sharp() now       */
+        }
+    } else {                        /* Not a macro call     */
+        out_ptr = wp;               /* Advance the place    */
+        if (wrong_line)             /* is_macro() swallowed */
+            break;                  /*      the newline     */
+    }
+    while (char_type[ c = get_ch()] & HSP) {    /* Horizontal space */
+        if (c != COM_SEP)           /* Skip 0-length comment*/
+            *out_ptr++ = c;
+    }
+    line_top = FALSE;               /* Read over some token */
+}                                   /* Loop for line        */
+@
+
+<<Process each token on this line, without expansion.>>=
+/*
+ * Process each token on this line.
+ */
+line_top = TRUE;
+while (c != '\n' && c != CHAR_EOF) {    /* For the whole line   */
+    /*
+     * has_pragma is set to TRUE so as to execute _Pragma() operator
+     * when the psuedo macro _Pragma() is found.
+     */
+    int     has_pragma;
+
+    if ((mcpp_debug & MACRO_CALL) && ! in_directive) {
+        line_col.line = src_line;       /* Location in source   */
+        line_col.col = infile->bptr - infile->buffer - 1;
+    }
+    scan_token( c, (wp = out_ptr, &wp), out_wend);
+    out_ptr = wp;               /* Advance the place    */
+    if (wrong_line)             /* is_macro() swallowed */
+        break;                  /*      the newline     */
+    while (char_type[ c = get_ch()] & HSP) {    /* Horizontal space */
+        if (c != COM_SEP)           /* Skip 0-length comment*/
+            *out_ptr++ = c;
+    }
+    line_top = FALSE;               /* Read over some token */
+}                                   /* Loop for line        */
 @

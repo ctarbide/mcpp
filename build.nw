@@ -17,21 +17,21 @@ make -C src
 @
 
 <<extract sources>>=
-nofake.sh -Rcc1.c -osrc/cc1.c mcpp.nw
-nofake.sh -Rdirective.c -osrc/directive.c mcpp.nw
-nofake.sh -Reval.c -osrc/eval.c mcpp.nw
-nofake.sh -Rexpand.c -osrc/expand.c mcpp.nw
-nofake.sh -Rmain.c -osrc/main.c mcpp.nw
-nofake.sh -Rmain_libmcpp.c -osrc/main_libmcpp.c mcpp.nw
-nofake.sh -Rmbchar.c -osrc/mbchar.c mcpp.nw
-nofake.sh -Rmcpp_lib.h -osrc/mcpp_lib.h mcpp.nw
-nofake.sh -Rmcpp_out.h -osrc/mcpp_out.h mcpp.nw
-nofake.sh -Rpreproc.c -osrc/preproc.c mcpp.nw
-nofake.sh -Rsupport.c -osrc/support.c mcpp.nw
-nofake.sh -Rsystem.c -osrc/system.c mcpp.nw
-nofake.sh -Rtestmain.c -osrc/testmain.c mcpp.nw
-nofake.sh -Rconfiged.h -osrc/configed.h mcpp.nw
-nofake.sh -Rinternal.h -osrc/internal.h mcpp.nw
-nofake.sh -Rnoconfig.h -osrc/noconfig.h mcpp.nw
-nofake.sh -Rsystem.h -osrc/system.h mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rcc1.c -osrc/cc1.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rdirective.c -osrc/directive.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Reval.c -osrc/eval.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rexpand.c -osrc/expand.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rmain.c -osrc/main.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rmain_libmcpp.c -osrc/main_libmcpp.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rmbchar.c -osrc/mbchar.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rmcpp_lib.h -osrc/mcpp_lib.h mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rmcpp_out.h -osrc/mcpp_out.h mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rpreproc.c -osrc/preproc.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rsupport.c -osrc/support.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rsystem.c -osrc/system.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rtestmain.c -osrc/testmain.c mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rconfiged.h -osrc/configed.h mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rinternal.h -osrc/internal.h mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rnoconfig.h -osrc/noconfig.h mcpp.nw
+CHMOD='chmod 0444' nofake.sh -L -Rsystem.h -osrc/system.h mcpp.nw
 @

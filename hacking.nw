@@ -1,0 +1,75 @@
+
+This is how it generally goes:
+
+    nofake hacking.nw
+
+    nofake hacking.nw | sh
+
+    nofake hacking.nw | sh | sh
+
+<<*>>=
+<<gtags approach>>
+@
+
+<<gtags approach>>=
+nofake -Rgtags hacking.nw
+@
+
+<<gtags>>=
+CHMOD='chmod 0444' nofake.sh -R.gtags.conf -o.gtags.conf hacking.nw
+CHMOD='chmod 0444' nofake.sh -R.gtags.listing -o.gtags.listing hacking.nw
+<<update gtags>>
+global -x main
+@
+
+<<update gtags>>=
+gtags --gtagsconf .gtags.conf -f .gtags.listing
+htags --gtagsconf .gtags.conf
+@
+
+<<.gtags.conf>>=
+default:\
+	:langmap=c\:.nw.c.h:
+@
+
+<<.gtags.listing>>=
+mcpp.nw
+@
+
+<<global examples>>=
+global -E -x -e '.*a.*b.*'
+global -gx mcpp_debug
+global -rx get_ch
+@
+
+<<print_macro_arg>>=
+<<update gtags>>
+global -x print_macro_arg
+global -rx print_macro_arg
+@
+
+<<print_macro_inf>>=
+<<update gtags>>
+global -x print_macro_inf
+global -rx print_macro_inf
+@
+
+<<substitute>>=
+<<update gtags>>
+global -x substitute
+global -rx substitute
+@
+
+<<replace>>=
+<<update gtags>>
+global -x replace
+global -rx replace
+@
+
+<<expand_>>=
+<<update gtags>>
+global -x 'expand_.*'
+global -rx 'expand_init'
+global -rx 'expand_prestd'
+global -rx 'expand_std'
+@
