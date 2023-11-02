@@ -8,6 +8,8 @@ available from coolscripts, at [1].  See [2] for more info.
 
 <<*>>=
 nofake -R'build linux compiler-independent' build.nw
+nofake -R'build linux compiler-independent' build.nw | CC=gcc CFLAGS='-c -Wall -O2 -Wno-maybe-uninitialized' sh
+nofake -R'build linux compiler-independent' build.nw | CC=clang CFLAGS='-c -Wall -O2' sh
 @
 
 <<build linux compiler-independent>>=
@@ -16,22 +18,34 @@ cat noconfig/linux.mak > src/Makefile
 make -C src
 @
 
+<<#define HOST_COMPILER>>=
+<<#define HOST_COMPILER CLANG>>
+@
+
+<<#define HOST_COMPILER GNUC>>=
+#define HOST_COMPILER       GNUC
+@
+
+<<#define HOST_COMPILER CLANG>>=
+#define HOST_COMPILER       CLANG
+@
+
 <<extract sources>>=
-CHMOD='chmod 0444' nofake.sh -L -Rcc1.c -osrc/cc1.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rdirective.c -osrc/directive.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Reval.c -osrc/eval.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rexpand.c -osrc/expand.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rmain.c -osrc/main.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rmain_libmcpp.c -osrc/main_libmcpp.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rmbchar.c -osrc/mbchar.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rmcpp_lib.h -osrc/mcpp_lib.h mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rmcpp_out.h -osrc/mcpp_out.h mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rpreproc.c -osrc/preproc.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rsupport.c -osrc/support.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rsystem.c -osrc/system.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rtestmain.c -osrc/testmain.c mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rconfiged.h -osrc/configed.h mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rinternal.h -osrc/internal.h mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rnoconfig.h -osrc/noconfig.h mcpp.nw
-CHMOD='chmod 0444' nofake.sh -L -Rsystem.h -osrc/system.h mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rcc1.c -osrc/cc1.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rdirective.c -osrc/directive.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Reval.c -osrc/eval.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rexpand.c -osrc/expand.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rmain.c -osrc/main.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rmain_libmcpp.c -osrc/main_libmcpp.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rmbchar.c -osrc/mbchar.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rmcpp_lib.h -osrc/mcpp_lib.h build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rmcpp_out.h -osrc/mcpp_out.h build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rpreproc.c -osrc/preproc.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rsupport.c -osrc/support.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rsystem.c -osrc/system.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rtestmain.c -osrc/testmain.c build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rconfiged.h -osrc/configed.h build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rinternal.h -osrc/internal.h build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rnoconfig.h -osrc/noconfig.h build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rsystem.h -osrc/system.h build.nw mcpp.nw
 @

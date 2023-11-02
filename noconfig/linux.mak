@@ -31,12 +31,8 @@ NAME = mcpp
 
 # CC:   name of gcc executable
 #       e.g. cc, gcc, gcc-2.95.3, i686-pc-linux-gnu-gcc-4.1.1
-CC = gcc
-CXX = g++
-CFLAGS = -c -O2 -Wall   # -ggdb -v
 # for gcc 4.1 or later (Don't use this option to compile libmcpp)
 #CFLAGS += -fstack-protector
-CPPFLAGS =
 
 LINKFLAGS = -o $(NAME)
 # for gcc 4.1 or later (Don't use this option to compile libmcpp)

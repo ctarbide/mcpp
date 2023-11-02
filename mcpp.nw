@@ -1873,6 +1873,8 @@ void    clear_symtable( void)
 #include    "internal.h"
 #endif
 
+<<#define CASTING_IS_CODE_SMELL>>
+
 typedef struct optab {
     char    op;                     /* Operator                     */
     char    prec;                   /* Its precedence               */
@@ -1972,9 +1974,9 @@ static const char * const   non_eval
         = " (in non-evaluated sub-expression)";             /* _W8_ */
 
 #if HAVE_LONG_LONG && COMPILER == INDEPENDENT
-    static int  w_level = 1;    /* warn_level at overflow of long   */
+static int  w_level = 1;    /* warn_level at overflow of long   */
 #else
-    static int  w_level = 2;
+static int  w_level = 2;
 #endif
 
 /*
@@ -2189,7 +2191,9 @@ expr_t  eval_if( void)
             if (mcpp_debug & EXPRESSION)
                 mcpp_fprintf( DBG
                         , "op %s, prec %d, stacked op %s, prec %d, skip %d\n"
-                , opname[ op], prec, opname[ opp->op], opp->prec, opp->skip);
+                , opname[ op], prec, opname[
+                    CASTING_IS_CODE_SMELL(char, int, opp->op)
+                ], opp->prec, opp->skip);
 
             /* Stack coming sub-expression of higher precedence.    */
             if (opp->prec < prec) {
@@ -2279,7 +2283,9 @@ expr_t  eval_if( void)
                 if (opp->op != OP_QUE) {    /* Matches ? on stack?  */
                     cerror(
                     "Misplaced \":\", previous operator is \"%s\""  /* _E_  */
-                            , opname[opp->op], 0L, NULL);
+                            , opname[
+                                CASTING_IS_CODE_SMELL(char, int, opp->op)
+                            ], 0L, NULL);
                     return  0L;
                 }
                 /* Evaluate op1.            Fall through            */
@@ -3349,9 +3355,13 @@ static expr_t   eval_unsigned(
     VAL_SIGN *      valp = *valpp;
     uexpr_t     v1 = 0;
     int     chk;        /* Flag of overflow in unsigned long long   */
+#if HAVE_LONG_LONG
     int     minus;      /* Big integer converted from signed long   */
+#endif
 
+#if HAVE_LONG_LONG
     minus = ! stdc3 && (v1u > ULONGMAX || v2u > ULONGMAX);
+#endif
 
     switch (op) {
     case OP_EOE:
@@ -3491,7 +3501,8 @@ static void dump_stack(
 
     while (opstack < opp) {
         mcpp_fprintf( DBG, " [%2d] %2d %04o    %d %s\n", (int)(opp - opstack)
-                , opp->op, opp->prec, opp->skip, opname[ opp->op]);
+                , opp->op, opp->prec, opp->skip, opname[
+                    CASTING_IS_CODE_SMELL(char, int, opp->op)]);
         opp--;
     }
 
@@ -3551,6 +3562,8 @@ static void dump_stack(
 #define ARG_ERROR   (-255)
 #define CERROR      1
 #define CWARN       2
+
+<<#define CASTING_IS_CODE_SMELL>>
 
 typedef struct location {           /* Where macro or arg locate    */
     long            start_line;                 /* Beginning at 1   */
@@ -4007,7 +4020,6 @@ static char *   chk_magic_balance(
 #define MAX_NEST_MAGICS 255
     char    mac_id[ MAX_NEST_MAGICS][ MAC_E_LEN_V - 2];
     char    arg_id[ MAX_NEST_MAGICS][ ARG_E_LEN_V - 2];
-    char *  mac_loc[ MAX_NEST_MAGICS];
     char *  arg_loc[ MAX_NEST_MAGICS];
     char *  mesg = "%s %ld %s-closing-comment(s) in tracing macro";
     int     mac, arg;
@@ -4022,7 +4034,6 @@ static char *   chk_magic_balance(
         switch (*buf_p++) {
         case MAC_CALL_START :
             if (option_flags.v) {
-                mac_loc[ mac] = buf_p - 2;
                 memcpy( mac_id[ mac], buf_p, MAC_S_LEN - 2);
             }
             mac++;
@@ -4217,7 +4228,8 @@ static char *   replace(
         } else {
             m_inf->locs.start_col = m_inf->locs.start_line = 0L;
         }
-        m_inf->args = m_inf->loc_args = NULL;       /* Default args */
+        m_inf->args = NULL;           /* Default args */
+        m_inf->loc_args = NULL;       /* Default args */
         for (num = 1, recurs = 0; num < m_num; num++)
             if (mac_inf[ num].defp == defp)
                 recurs++;           /* Recursively nested macro     */
@@ -4992,6 +5004,9 @@ static const char *     remove_magics(
             len = option_flags.v ? ARG_E_LEN_V : ARG_E_LEN;
             mark = ARG_E_LEN_V - 1;
             break;
+        default:
+            cfatal( "Exhaustion", NULL, 0L, NULL);
+            return NULL; /* cfatal does a longjmp */
         }
         switch (magic) {
         case MAC_CALL_START :
@@ -5006,6 +5021,9 @@ static const char *     remove_magics(
             num = arg_n;
             rm = arg_id[ arg_n++][ mark];
             break;
+        default:
+            cfatal( "Exhaustion", NULL, 0L, NULL);
+            return NULL; /* cfatal does a longjmp */
         }
         if (rm == FALSE) {                  /* Not to be removed    */
             memmove( tp, loc_tab[ num], len);
@@ -5254,12 +5272,17 @@ static char *   substitute(
  * the formal parameters in the replacement list.
  */
 {
-    char *  out_start = out;
-    const char *    arg;
     int     c;
+#if COMPILER == GNUC || COMPILER == MSC
+    char *  out_start = out;
+#endif
+#if COMPILER == GNUC
+    const char *    arg;
     int     gvar_arg;   /* gvar_arg'th argument is GCC variable argument    */
 
     gvar_arg = (defp->nargs & GVA_ARGS) ? (defp->nargs & ~AVA_ARGS) : 0;
+#endif
+
     *out = EOS;                             /* Ensure to termanate  */
 
     while ((c = *in++) != EOS) {
@@ -5460,7 +5483,7 @@ static char *   rescan(
                     if (inner->nargs >= 0 && mgc_seq.magic_start) {
                         /* Magic sequence is found between macro */
                         /* name and '('.  This is a nuisance.    */
-                        char *      mgc_cleared;
+                        const char *    mgc_cleared;
                         size_t      seq_len;
                         size_t      arg_elen = option_flags.v ? ARG_E_LEN_V
                                             : ARG_E_LEN;
@@ -5483,7 +5506,7 @@ static char *   rescan(
                                     (const char *) infile->bptr, FALSE);
                                         /* Remove pair of magics    */
                             strcpy( infile->bptr, mgc_cleared);
-                            free( mgc_cleared);
+                            free( CASTING_IS_CODE_SMELL(const char *, void *, mgc_cleared));
                         }
                     }
                 }
@@ -5931,6 +5954,10 @@ static int  collect_args(
     LOCATION *  loc;                            /* Current locs     */
     MAGIC_SEQ   mgc_prefix;     /* MAC_INF seqs and spaces preceding an arg */
     int     c;
+
+    /* TODO: gcc v12.2.0 says locs may be uninitialized, I don't see how, look
+    into it later */
+    /* locs = NULL; */
 
     if (mcpp_debug & EXPAND)
         dump_unget( "collect_args entry");
@@ -6601,7 +6628,7 @@ const char *    null = "";      /* "" string for convenience    */
 const char **   inc_dirp;       /* Directory of #includer       */
 const char *    cur_fname;      /* Current source file name     */
             /* cur_fname is not rewritten by #line directive    */
-char *      cur_fullname;
+const char *    cur_fullname;
     /* Full path of current source file (i.e. infile->full_fname)       */
 int         no_source_line;     /* Do not output line in diag.  */
 int         no_macro_expansion; /* Do no macro expansion in code */
@@ -7973,7 +8000,7 @@ const char *    set_encoding(
             mcpp_fputc( '\n', ERR);
         }
     }
-    if ( dot = strchr( name, '.' ) )
+    if ( (dot = strchr( name, '.' )) )
         /* Remove initial 'xxxxx.' as 'ja_JP.', 'en_US.', 'C.' or any other   */
         strcpy( norm, dot+1);
     else
@@ -8299,7 +8326,8 @@ static size_t   mb_read_iso2022_jp(
             break;
 
         while (char_type[ c1 = *out_p++ = (*in_p++ & UCHARMAX)] & IJP) {
-            if (! (char_type[ *out_p++ = (*in_p++ & UCHARMAX)] & IJP)) {
+            int tmp = *out_p++ = (*in_p++ & UCHARMAX);
+            if (! (char_type[tmp] & IJP)) {
                 error = TRUE;
                 break;
             }
@@ -8343,6 +8371,8 @@ static size_t   mb_read_utf8(
             bytes = 3;                          /* 3-byte character */
         else if ((char_type[ c1 & UCHARMAX] & U2_1) == U2_1)
             bytes = 2;                          /* 2-byte character */
+        else
+            return MB_ERROR;
 
         /* Must ensure that the sequence is not reserved as a surrogate */
         codepoint = ((2 @<< (6-bytes)) - 1) & c1;    /* mask off top bits    */
@@ -8554,6 +8584,8 @@ int  last_is_mbchar(
 #include    "system.h"
 #include    "internal.h"
 #endif
+
+<<#define CASTING_IS_CODE_SMELL>>
 
 static void     scan_id( int c);
                 /* Scan an identifier           */
@@ -9634,12 +9666,13 @@ static char *   scan_ucn(
     for (i = 0; i < cnt; i++) {
         c = get_ch();
         if (! isxdigit( c)) {
-            if (infile->fp)
+            if (infile->fp) {
                 cerror( "Illegal UCN sequence"              /* _E_  */
                         , NULL, 0L, NULL);
                 *out = EOS;
                 unget_ch();
                 return  NULL;
+            }
         }
         c = tolower( c);
         *out++ = c;
@@ -10065,13 +10098,13 @@ int     get_ch( void)
     free( file->buffer);                    /* Free buffer          */
     if (infile == NULL) {                   /* If at end of input   */
         free( file->filename);
-        free( file->src_dir);
+        free( CASTING_IS_CODE_SMELL(const char *, void *, file->src_dir));
         free( file);    /* full_fname is the same with filename for main file*/
         return  CHAR_EOF;                   /* Return end of file   */
     }
     if (file->fp) {                         /* Source file included */
         free( file->filename);              /* Free filename        */
-        free( file->src_dir);               /* Free src_dir         */
+        free( CASTING_IS_CODE_SMELL(const char *, void *, file->src_dir));
         fclose( file->fp);                  /* Close finished file  */
         /* Do not free file->real_fname and file->full_fname        */
         cur_fullname = infile->full_fname;
@@ -10129,7 +10162,6 @@ static char *   parse_line( void)
     char *      limit;                      /* Buffer end           */
     char *      tp;     /* Current pointer into temporary buffer    */
     char *      sp;                 /* Pointer into input buffer    */
-    size_t      com_size;
     int         c;
 
     if ((sp = get_line( FALSE)) == NULL)    /* Next logical line    */
@@ -10154,12 +10186,11 @@ static char *   parse_line( void)
     sp--;
 
     while ((c = *sp++ & UCHARMAX) != '\n') {
-
         switch (c) {
         case '/':
             switch (*sp++) {
-            case '*':                       /* Start of a comment   */
-com_start:
+            case '*': {                     /* Start of a comment   */
+                size_t com_size = 0;
                 if ((sp = read_a_comment( sp, &com_size)) == NULL) {
                     free( temp);            /* End of file with un- */
                     return  NULL;           /*   terminated comment */
@@ -10188,6 +10219,7 @@ com_start:
                     break;
                 }
                 break;
+            }
             case '/':                                       /* //   */
                 if (! standard)
                     goto  not_comment;
@@ -10301,7 +10333,10 @@ static char *   read_a_comment(
     if (keep_spaces) {
         saved_sp = sp - 2;          /* '-2' for beginning / and *   */
         *sizp = 0;
-    }
+    } /* else { */
+        /* TODO: gcc v12.2.0 says this may be uninitialized, I don't see how, look into it later */
+        /* saved_sp = NULL;
+    } */
     if (keep_comments)                      /* If writing comments  */
         mcpp_fputs( "/*", OUT);             /* Write the initializer*/
     c = *sp++;
@@ -10778,7 +10813,7 @@ FILEINFO *  get_file(
     }
     if (src_dir) {
         file->src_dir = xmalloc( strlen( src_dir) + 1);
-        strcpy( file->src_dir, src_dir);
+        strcpy( CASTING_IS_CODE_SMELL(const char *, char *, file->src_dir), src_dir);
     } else {
         file->src_dir = NULL;
     }
@@ -11335,6 +11370,8 @@ static void dump_token(
 #include    "internal.h"
 #endif
 
+<<#define CASTING_IS_CODE_SMELL>>
+
 #if     HOST_SYS_FAMILY == SYS_UNIX
 #include    "unistd.h"              /* For getcwd(), readlink() */
 #elif   HOST_COMPILER == MSC || HOST_COMPILER == LCC
@@ -11537,8 +11574,8 @@ static const char **    incend;         /* -> active end of incdir  */
 static int          max_inc;            /* Number of incdir[]       */
 
 typedef struct inc_list {       /* List of directories or files     */
-    char *      name;           /* Filename or directory-name       */
-    size_t      len;                    /* Length of 'name'         */
+    const char *	name;	/* Filename or directory-name       */
+    size_t  	len;                    /* Length of 'name'         */
 } INC_LIST;
 
 /*
@@ -11716,7 +11753,9 @@ void    do_options(
         /* Unset system-specific and site-specific include directories ?    */
     int         set_cplus_dir;  /* Set C++ include directory ? (for GCC)*/
     int         show_path;          /* Show include directory list  */
+#if COMPILER == GNUC || COMPILER == LCC
     DEFBUF *    defp;
+#endif
     VAL_SIGN *  valp;
     int         sflag;                      /* -S option or similar */
     int         trad;                       /* -traditional         */
@@ -14721,7 +14760,9 @@ static int  open_file(
     } else {
         fname = filename;
     }
+#if SYSTEM == SYS_MAC && COMPILER == GNUC
 search:
+#endif
     fullname = norm_path( *dirp, fname, TRUE, FALSE);
                                     /* Convert to absolute path     */
     if (! fullname)                 /* Non-existent or directory    */
@@ -14878,7 +14919,7 @@ static const char *     set_fname(
             return  filename;           /* Already registered       */
     }
     fname_end->name = xmalloc( fnamelen + 1);
-    filename = strcpy( fname_end->name, filename);
+    filename = strcpy( CASTING_IS_CODE_SMELL(const char *, char *, fname_end->name), filename);
                                 /* Global pointer for get_file()    */
     fname_end->len = fnamelen;
     fname_end++;
@@ -15682,8 +15723,11 @@ void    do_old( void)
 {
     static const char * const   unknown
             = "Unknown #directive \"%s\"%.0ld%s";       /* _E_ _W8_ */
+
+#if COMPILER == GNUC || SYSTEM == SYS_MAC
     static const char * const   ext
             = "%s is not allowed by Standard%.0ld%s";   /* _W2_ _W8_*/
+#endif
 
 #if COMPILER == GNUC
     if (str_eq( identifier, "include_next")) {
@@ -15965,7 +16009,7 @@ static int  do_debug(
         { NULL,     0       },
     };
     struct Debug_arg    *argp;
-    int     num;
+    int     num = 0;
     int     c;
 
     c = skip_ws();
@@ -16046,7 +16090,9 @@ static void dump_path( void)
     const char **   incptr;
     const char *    inc_dir;
     const char *    dir = "./";
+#if SYSTEM == SYS_MAC
     int             i;
+#endif
 
     mcpp_fputs( "Include paths are as follows --\n", DBG);
     for (incptr = incdir; incptr < incend; incptr++) {
@@ -17067,7 +17113,7 @@ extern int      bsl_need_escape;/* '\\' in mbchar should be escaped */
 extern int      mcpp_debug;         /* Class of debug information   */
 extern long     in_asm;             /* In #asm - #endasm block      */
 extern jmp_buf  error_exit;         /* Exit on fatal error          */
-extern char *   cur_fullname;       /* Full name of current source  */
+extern const char * cur_fullname;   /* Full name of current source  */
 extern short *  char_type;          /* Character classifier         */
 extern char *   workp;              /* Free space in work[]         */
 extern char * const     work_end;   /* End of work[] buffer         */
@@ -17275,7 +17321,7 @@ extern char *   stpcpy( char * dest, const char * src);
 #define HOST_SYSTEM         SYSTEM
 
 /* Define host compiler.            */
-#define HOST_COMPILER       GNUC
+<<#define HOST_COMPILER>>
 
 /* Version message.                 */
 /* "MCPP V.2.* (200y/mm) compiled by " precedes VERSION_MSG */
@@ -18315,12 +18361,6 @@ while (c != '\n' && c != CHAR_EOF) {    /* For the whole line   */
  */
 line_top = TRUE;
 while (c != '\n' && c != CHAR_EOF) {    /* For the whole line   */
-    /*
-     * has_pragma is set to TRUE so as to execute _Pragma() operator
-     * when the psuedo macro _Pragma() is found.
-     */
-    int     has_pragma;
-
     if ((mcpp_debug & MACRO_CALL) && ! in_directive) {
         line_col.line = src_line;       /* Location in source   */
         line_col.col = infile->bptr - infile->buffer - 1;
@@ -18335,4 +18375,8 @@ while (c != '\n' && c != CHAR_EOF) {    /* For the whole line   */
     }
     line_top = FALSE;               /* Read over some token */
 }                                   /* Loop for line        */
+@
+
+<<#define CASTING_IS_CODE_SMELL>>=
+#define CASTING_IS_CODE_SMELL(from,to,sym) ((to)(sym))
 @

@@ -16,8 +16,8 @@ nofake -Rgtags hacking.nw
 @
 
 <<gtags>>=
-CHMOD='chmod 0444' nofake.sh -R.gtags.conf -o.gtags.conf hacking.nw
-CHMOD='chmod 0444' nofake.sh -R.gtags.listing -o.gtags.listing hacking.nw
+CHMOD='chmod 0444' nofake.sh --error -R.gtags.conf -o.gtags.conf hacking.nw
+CHMOD='chmod 0444' nofake.sh --error -R.gtags.listing -o.gtags.listing hacking.nw
 <<update gtags>>
 global -x main
 @
@@ -72,4 +72,8 @@ global -x 'expand_.*'
 global -rx 'expand_init'
 global -rx 'expand_prestd'
 global -rx 'expand_std'
+@
+
+<<cppcheck>>=
+cppcheck --check-level=exhaustive --force src/*.c
 @
