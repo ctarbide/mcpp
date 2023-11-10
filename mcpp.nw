@@ -12804,6 +12804,7 @@ static void usage(
 #endif
 
 "-j          Don't output the source line in diagnostics.\n",
+"-0          Do no macro expansion.\n",
 "-M, -MM, -MD, -MMD, -MP, -MQ target, -MT target, -MF file\n",
 "            Output source file dependency line for makefile.\n",
 #if SYS_FAMILY == SYS_UNIX
