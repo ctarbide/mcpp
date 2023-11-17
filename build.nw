@@ -7,9 +7,8 @@ available from ctweb, at [1].  See [2] for more info.
 - [2]: https://github.com/ctarbide/ctweb/blob/master/tools/nofake-README.txt
 
 <<*>>=
-nofake -R'build linux compiler-independent' build.nw
-nofake -R'build linux compiler-independent' build.nw | CC=gcc CFLAGS='-c -Wall -O2 -Wno-maybe-uninitialized' sh
-nofake -R'build linux compiler-independent' build.nw | CC=clang CFLAGS='-c -Wall -O2' sh
+nofake -R'build linux compiler-independent - gcc' build.nw
+nofake -R'build linux compiler-independent - clang' build.nw
 @
 
 <<build linux compiler-independent>>=
@@ -18,8 +17,12 @@ cat noconfig/linux.mak > src/Makefile
 make -C src
 @
 
-<<#define HOST_COMPILER>>=
-<<#define HOST_COMPILER CLANG>>
+<<build linux compiler-independent - gcc>>=
+nofake -R'build linux compiler-independent' build.nw build-gnuc.nw | CC=gcc CFLAGS='-c -Wall -O2 -Wno-maybe-uninitialized' sh
+@
+
+<<build linux compiler-independent - clang>>=
+nofake -R'build linux compiler-independent' build.nw build-clang.nw | CC=clang CFLAGS='-c -Wall -O2' sh
 @
 
 <<#define HOST_COMPILER GNUC>>=
@@ -30,22 +33,26 @@ make -C src
 #define HOST_COMPILER       CLANG
 @
 
+<<noweb files>>=
+build.nw <<build-COMPILER.nw>> mcpp.nw
+@
+
 <<extract sources>>=
-CHMOD='chmod 0444' nofake.sh --error -L -Rcc1.c -osrc/cc1.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rdirective.c -osrc/directive.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Reval.c -osrc/eval.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rexpand.c -osrc/expand.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rmain.c -osrc/main.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rmain_libmcpp.c -osrc/main_libmcpp.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rmbchar.c -osrc/mbchar.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rmcpp_lib.h -osrc/mcpp_lib.h build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rmcpp_out.h -osrc/mcpp_out.h build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rpreproc.c -osrc/preproc.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rsupport.c -osrc/support.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rsystem.c -osrc/system.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rtestmain.c -osrc/testmain.c build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rconfiged.h -osrc/configed.h build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rinternal.h -osrc/internal.h build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rnoconfig.h -osrc/noconfig.h build.nw mcpp.nw
-CHMOD='chmod 0444' nofake.sh --error -L -Rsystem.h -osrc/system.h build.nw mcpp.nw
+CHMOD='chmod 0444' nofake.sh --error -L -Rcc1.c -osrc/cc1.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rdirective.c -osrc/directive.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Reval.c -osrc/eval.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rexpand.c -osrc/expand.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rmain.c -osrc/main.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rmain_libmcpp.c -osrc/main_libmcpp.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rmbchar.c -osrc/mbchar.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rmcpp_lib.h -osrc/mcpp_lib.h <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rmcpp_out.h -osrc/mcpp_out.h <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rpreproc.c -osrc/preproc.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rsupport.c -osrc/support.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rsystem.c -osrc/system.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rtestmain.c -osrc/testmain.c <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rconfiged.h -osrc/configed.h <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rinternal.h -osrc/internal.h <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rnoconfig.h -osrc/noconfig.h <<noweb files>>
+CHMOD='chmod 0444' nofake.sh --error -L -Rsystem.h -osrc/system.h <<noweb files>>
 @

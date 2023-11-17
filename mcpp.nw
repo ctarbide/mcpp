@@ -11,6 +11,59 @@ Some questions:
 
         - nofake -R'expand_' hacking.nw
 
+<<typedef expr_t (and uexpr_t)>>=
+#if HAVE_INTMAX_T
+#if HAVE_STDINT_H
+#include <stdint.h>
+#endif
+#if HAVE_INTTYPES_H
+#include <inttypes.h>
+#endif
+typedef intmax_t    expr_t;
+typedef uintmax_t   uexpr_t;
+#else
+#if     HAVE_LONG_LONG
+#if     (HOST_COMPILER == MSC && _MSC_VER < 1500) || HOST_COMPILER == BORLANDC
+typedef __int64             expr_t;
+typedef unsigned __int64    uexpr_t;
+#else
+typedef long long           expr_t;
+typedef unsigned long long  uexpr_t;
+#endif
+#else   /* !HAVE_LONG_LONG  */
+typedef unsigned long   uexpr_t;
+typedef long            expr_t;
+#endif  /* HAVE_LONG_LONG   */
+#endif  /* HAVE_INTMAX_T    */
+@
+
+<<#define LL_FORM>>=
+/*
+ * Define the format specifier of intmax_t or long long for
+ * fprintf( fp_debug,).
+ * Both of target COMPILER and HOST_COMPILER should have long long.
+ */
+#if     HAVE_LONG_LONG
+#if     HOST_COMPILER == BORLANDC   \
+        || (HOST_COMPILER == MSC && _MSC_VER < 1400)    \
+        || HOST_SYSTEM == SYS_MINGW
+#define LL_FORM             "I64"   /* Format specifier for __int64 */
+#endif
+#ifndef LL_FORM
+#define LL_FORM             "ll"    /* C99: for long long, "j" for intmax_t */
+#endif
+#endif
+@
+
+<<#define EXPR_FORM>>=
+#if HAVE_INTMAX_T
+#define EXPR_FORM PRIdMAX
+#define UEXPR_FORM PRIuMAX
+#else
+#define EXPR_FORM LL_FORM "d"
+#define UEXPR_FORM LL_FORM "u"
+#endif
+@
 
 <<mcpp_lib.h>>=
 /* mcpp_lib.h: declarations of libmcpp exported (visible) functions */
@@ -3724,14 +3777,9 @@ eval_eval(
  */
 {
     const char *const  zero_div = "%sDivision by zero%.0ld%s";  /* _E_ _W8_ */
-#if HAVE_LONG_LONG
     const char *const  neg_format =
-        "Negative value \"%" LL_FORM "d\" is converted to positive \"%" /* _W1_ _W8_*/
-        LL_FORM "u\"%%s";
-#else
-    const char *const  neg_format =
-        "Negative value \"%ld\" is converted to positive \"%lu\"%%s";   /* _W1_ _W8_*/
-#endif
+	"Negative value \"%" EXPR_FORM "\" is converted to positive \"%" /* _W1_ _W8_*/
+        UEXPR_FORM "\"%%s";
     expr_t  v1, v2;
     int     sign1, sign2;
 
@@ -19350,6 +19398,7 @@ main(int argc, char *argv[])
 #define SYS_MAC             0x1E00  /* (SYS_MAC & 0xF000) == SYS_UNIX       */
 #define SYS_WIN             0x7000
 #define SYS_WIN32           0x7400  /* (SYS_WIN32 & 0xF000) == SYS_WIN      */
+#define SYS_WIN64           0x7800  /* (SYS_WIN64 & 0xF000) == SYS_WIN      */
 #define SYS_MINGW           0x7C00  /* (SYS_MINGW & 0xF000) == SYS_WIN      */
 
 /* COMPILER */
@@ -19359,6 +19408,7 @@ main(int argc, char *argv[])
 #define WIN_SYMANTECC       0x7470  /* Symantec for Windows         */
 #define LCC                 0x74C0  /* LCC-Win32    */
 #define GNUC                0x00E0  /* GNU C (GCC)  */
+#define CLANG               0x00F0  /* CLANG        */
 #define INDEPENDENT         0xFFFF  /* No target, compiler-independent-build*/
 
 #define SYS_FAMILY          (SYSTEM & 0xF000)
@@ -20322,8 +20372,10 @@ extern char    *stpcpy(char *dest, const char *src);
 #define COMPILER_UNKNOWN    0
 #define MSC                 0x7400  /* Microsoft C, Visual C++      */
 #define BORLANDC            0x7440  /* Borland C    */
+#define WIN_SYMANTECC       0x7470  /* Symantec for Windows         */
 #define LCC                 0x74C0  /* LCC-Win32    */
 #define GNUC                0x00E0  /* GNU C (GCC)  */
+#define CLANG               0x00F0  /* CLANG        */
 #define INDEPENDENT         0xFFFF  /* No target, compiler-independent build*/
 
 #define SYS_FAMILY          (SYSTEM & 0xF000)
@@ -20769,6 +20821,12 @@ extern char    *stpcpy(char *dest, const char *src);
 #define HOST_HAVE_STPCPY            TRUE
 #endif
 
+#elif   HOST_COMPILER == CLANG
+#define HOST_HAVE_LONG_LONG         TRUE
+#define HAVE_INTMAX_T               TRUE
+#define HAVE_INTTYPES_H             TRUE
+#define HAVE_STDINT_H               TRUE
+
 #elif   HOST_COMPILER == LCC
 #define HOST_HAVE_LONG_LONG         TRUE
 
@@ -20802,21 +20860,8 @@ extern char    *stpcpy(char *dest, const char *src);
 #define HAVE_LONG_LONG      TRUE
 #endif
 
-/*
- * Define the format specifier of intmax_t or long long for
- * fprintf( fp_debug,).
- * Both of target COMPILER and HOST_COMPILER should have long long.
- */
-#if     HAVE_LONG_LONG
-#if     HOST_COMPILER == BORLANDC   \
-        || (HOST_COMPILER == MSC && _MSC_VER < 1400)    \
-        || HOST_SYSTEM == SYS_MINGW
-#define LL_FORM             "I64"   /* Format specifier for __int64 */
-#endif
-#ifndef LL_FORM
-#define LL_FORM             "ll"    /* C99: for long long, "j" for intmax_t */
-#endif
-#endif
+<<#define LL_FORM>>
+<<#define EXPR_FORM>>
 
 #ifndef HOST_HAVE_STPCPY
 #define HOST_HAVE_STPCPY            FALSE
@@ -21062,28 +21107,7 @@ extern char    *stpcpy(char *dest, const char *src);
 #define OK_UCN              TRUE
 #define OK_MBIDENT          FALSE
 
-#if     HAVE_INTMAX_T
-#if     HAVE_STDINT_H
-#include    "stdint.h"
-#elif   HAVE_INTTYPES_H
-#include    "inttypes.h"
-#endif
-typedef intmax_t    expr_t;
-typedef uintmax_t   uexpr_t;
-#else
-#if     HAVE_LONG_LONG
-#if     (HOST_COMPILER == MSC && _MSC_VER < 1500) || HOST_COMPILER == BORLANDC
-typedef __int64             expr_t;
-typedef unsigned __int64    uexpr_t;
-#else
-typedef long long           expr_t;
-typedef unsigned long long  uexpr_t;
-#endif
-#else   /* !HAVE_LONG_LONG  */
-typedef unsigned long   uexpr_t;
-typedef long            expr_t;
-#endif  /* HAVE_LONG_LONG   */
-#endif  /* HAVE_INTMAX_T    */
+<<typedef expr_t (and uexpr_t)>>
 
 #if     HAVE_INTMAX_T
 #define EXPR_MAX            UINTMAX_MAX

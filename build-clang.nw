@@ -1,0 +1,7 @@
+<<#define HOST_COMPILER>>=
+<<#define HOST_COMPILER CLANG>>
+@
+
+<<build-COMPILER.nw>>=
+build-clang.nw
+@

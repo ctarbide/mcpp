@@ -1,0 +1,7 @@
+<<#define HOST_COMPILER>>=
+<<#define HOST_COMPILER GNUC>>
+@
+
+<<build-COMPILER.nw>>=
+build-gnuc.nw
+@
